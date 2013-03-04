@@ -1,0 +1,15 @@
+include *.txt
+recursive-include minepy *.h
+recursive-include minepy *.c
+recursive-include minepy *.cpp
+recursive-include minepy *.pxd
+recursive-include minepy *.pyx
+recursive-include matlab *.c
+recursive-include matlab *.m
+recursive-include matlab *.txt
+recursive-include examples *.c *.cpp *.m *.py
+include docs/Makefile
+include docs/source/*.py
+include docs/source/*.txt
+include docs/source/images/*
+

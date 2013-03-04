@@ -1,0 +1,87 @@
+MINE Application
+================
+
+The mine application is a script (installed together the minepy
+library) which computes the MINE statistics on a comma-separated
+values (CSV) file. The first column of the file must contain the
+variable names and each variable must have the same number of
+samples. The file must be in the form::
+   
+   var1_name,1,2.5,3,4,5,6,7,8,9,10
+   var2_name,8,7,6,5,6,6,6,1.23,4,4
+   var3_name,1,7,3,5,6,6,6,3,4,4.2
+   var4_name,...
+   ...
+
+Usage::
+
+    Usage: mine infile [-a <alpha>] [-c <c>] [-o <file>] [-m <var index>] [-p <var1 index> <var2 index>]
+
+    MINE Python v. 1.0.0 [Homepage: minepy.sf.net]. The mine script
+    compares by default all pairs of variables against each other. It
+    writes an output file where each column contains MIC (strength),
+    MIC-r^2 (nonlinearity), MAS (non- monotonicity), MEV (functionality),
+    MCN (complexity, eps=0), MCN_GENERAL (complexity, eps=1-MIC) and
+    Pearson (r). The input must be a comma-separated values file where the
+    first column must contain the variable names. Each variable must have
+    the same numer of samples.
+
+    Options:
+      -h, --help            show this help message and exit
+      -a <alpha>, --alpha=<alpha>
+                            the exponent in B(n) = n^alpha (default: 0.6.) alpha
+                            must be in (0, 1.0]
+      -c <c>, --clumps=<c>  determines how many more clumps there will be than
+                            columns in every partition. Default value is 15,
+                            meaning that when trying to draw Gx grid lines on the
+                            x-axis, the algorithm will start with at most 15*Gx
+                            clumps (default: 15). c must be > 0
+      -o <file>, --output=<file>
+                            output filename (default: mine_out.csv)
+      -m <var index>, --master=<var index>
+                            variable <var index> vs. all <var index> must be in
+                            [1, number of variables in file]
+      -p <var1 index> <var2 index>, --pair=<var1 index> <var2 index>
+                            variable <var1 index> vs. variable <var2 index> <var1
+                            index> and <var2 index> must be in [1, number of
+                            variables in file]
+
+Examples
+--------
+
+
+Spellman Gene Expression dataset
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Compute the MINE statistics for variable #1 (time) vs. all the other
+variables, with alpha=0.67 and c=15.
+
+  1. `Download <http://sourceforge.net/projects/minepy/files/data/MLB2008.csv/download>`_ the dataset
+  2. From a terminal, run::
+  
+	$ mine Spellman.csv -a 0.67 -c 15 -m 1 -o Spellman_MINE.txt
+
+Dataset details are in http://www.exploredata.net/Downloads
+
+Baseball dataset
+^^^^^^^^^^^^^^^^
+Compute the MINE statistics all pairs of variables against each other,
+with alpha=0.7 and c=15.
+
+  1. `Download <http://sourceforge.net/projects/minepy/files/data/MLB2008.csv/download>`_ the dataset
+  2. From a terminal, run::
+  
+	$ mine MLB2008.csv -a 0.7 -c 15 -o MLB2008_MINE.txt
+
+Dataset details are in http://www.exploredata.net/Downloads
+
+Microbiome dataset
+^^^^^^^^^^^^^^^^^^
+Compute the MINE statistics all pairs of variables against each other,
+with alpha=0.551 and c=10.
+
+  1. `Download <http://sourceforge.net/projects/minepy/files/data/Microbiome.csv/download>`_ the dataset
+  2. From a terminal, run::
+  
+	$ mine Microbiome.csv -a 0.551 -c 10 -o Microbiome_MINE.txt
+
+Dataset details are in http://www.exploredata.net/Downloads
