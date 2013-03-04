@@ -1,2 +1,4 @@
 *.[oa]
 *~
+build/
+docs/build/
