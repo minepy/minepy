@@ -1,4 +1,4 @@
-MINEpy - Maximal Information-based Nonparametric Exploration
+minepy - Maximal Information-based Nonparametric Exploration
 ------------------------------------------------------------
 
 Homepage: http://minepy.sourceforge.net/
@@ -7,7 +7,8 @@ minepy provides an ANSI C library (with C++, Python and MATLAB/OCTAVE
 wrappers) for Maximal Information-based Nonparametric Exploration (MIC
 and MINE family).
 
-minepy contains: 
+minepy contains:
+
  * an ANSI C core API,
  
  * a C++ interface, 
