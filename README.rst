@@ -9,12 +9,12 @@ and MINE family).
 
 minepy contains:
 
- * an ANSI C core API,
- * a C++ interface, 
- * an efficient Python API written in Cython,
- * an efficient MATLAB/OCTAVE API,
- * a command-line application similar to MINE.jar
-   (http://www.exploredata.net/Downloads/MINE-Application).
+* an ANSI C core API,
+* a C++ interface, 
+* an efficient Python API written in Cython,
+* an efficient MATLAB/OCTAVE API,
+* a command-line application similar to MINE.jar
+  (http://www.exploredata.net/Downloads/MINE-Application).
 
 minepy is multiplatform (Linux, Mac OS X and Windows Xp, Vista and 7),
 it works with Python 2 and 3 and it is Open Source, distributed under
