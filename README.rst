@@ -20,10 +20,10 @@ minepy is multiplatform (Linux, Mac OS X and Windows Xp, Vista and 7),
 it works with Python 2 and 3 and it is Open Source, distributed under
 the GNU General Public License version 3.
 
-If you use minepy, please cite:
+If you use minepy, please cite::
 
-| Davide Albanese, Michele Filosi, Roberto Visintainer, Samantha
-| Riccadonna, Giuseppe Jurman and Cesare Furlanello.
-| minerva and minepy: a C engine for the MINE suite and its R, Python
-| and MATLAB wrappers.  Bioinformatics (2013) 29(3): 407-408 first
-| published online December 14, 2012 doi:10.1093/bioinformatics/bts707.
+  Davide Albanese, Michele Filosi, Roberto Visintainer, Samantha
+  Riccadonna, Giuseppe Jurman and Cesare Furlanello.
+  minerva and minepy: a C engine for the MINE suite and its R, Python
+  and MATLAB wrappers.  Bioinformatics (2013) 29(3): 407-408 first
+  published online December 14, 2012 doi:10.1093/bioinformatics/bts707.
