@@ -1,4 +1,5 @@
 include *.txt
+include *.rst
 recursive-include minepy *.h
 recursive-include minepy *.c
 recursive-include minepy *.cpp
