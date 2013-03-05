@@ -2,3 +2,5 @@
 *~
 build/
 docs/build/
+dist/
+MANIFEST
