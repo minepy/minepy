@@ -1,13 +1,13 @@
 include *.txt
 include *.rst
-recursive-include minepy *.h
-recursive-include minepy *.c
-recursive-include minepy *.cpp
+include *.sh
+recursive-include libmine *.h
+recursive-include libmine *.c
+recursive-include libmine *.cpp
 recursive-include minepy *.pxd
 recursive-include minepy *.pyx
 recursive-include matlab *.c
 recursive-include matlab *.m
-recursive-include matlab *.txt
 recursive-include examples *.c *.cpp *.m *.py
 include docs/Makefile
 include docs/source/*.py
