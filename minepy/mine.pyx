@@ -100,6 +100,8 @@ cdef class MINE:
         
         self._free_score()
         self.score = mine_compute_score(&self.prob, &self.param)
+        if self.score is NULL:
+            raise ValueError("problem with mine_compute_score()")
 
     cdef void _free_score(self):
         mine_free_score(&self.score)
