@@ -9,24 +9,26 @@ try:
 except ImportError:
     from distutils.command.build_py import build_py
 
+# extension module arguments
 if get_platform() == "win32":
    libraries = []
 else:
    libraries = ['m']
-    
 extra_compile_args = ['-Wall']
-include_dirs = [get_python_inc(), numpy.get_include()]
+include_dirs = [numpy.get_include()]
+
 ext_modules = [
     Extension("minepy.mine",
               ["minepy/mine.c", "libmine/mine.c"],
-              libraries=libraries, include_dirs=include_dirs,
+              libraries=libraries,
+              include_dirs=include_dirs,
               extra_compile_args=extra_compile_args)
     ]
 
+# setup arguments
 packages=['minepy']
 scripts = ["minepy/scripts/mine"]
 data_files = []
-
 classifiers = [
     'Development Status :: 5 - Production/Stable',
     'Intended Audience :: Science/Research',
@@ -40,8 +42,9 @@ classifiers = [
     ]
 
 setup(name = 'minepy',
-      version='1.0.0',
+      version='1.0.1',
       description='minepy - Maximal Information-based Nonparametric Exploration',
+      long_description=open('README.rst').read(),
       author='Davide Albanese',
       author_email='davide.albanese@gmail.com',
       maintainer='Davide Albanese',
@@ -53,6 +56,5 @@ setup(name = 'minepy',
       scripts=scripts,
       data_files=data_files,
       classifiers=classifiers,
-      ext_modules=ext_modules,
-      requires=['numpy (>=1.3.0)']
-      )
+      ext_modules=ext_modules
+    )
