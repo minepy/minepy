@@ -1,7 +1,7 @@
 #ifndef _LIBMINE_H
 #define _LIBMINE_H
 
-#define LIBMINE_VERSION "1.0.0"
+#define LIBMINE_VERSION "1.1.0"
 
 #ifdef __cplusplus
 extern "C" {

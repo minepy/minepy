@@ -13,6 +13,20 @@ samples. The file must be in the form::
    var4_name,...
    ...
 
+The input file can contain missing values (new in minepy 1.1.0)::
+
+   var1_name,1,2.5,3,4,5,,7,8,9,10
+   var2_name,8,7,,5,6,6,6,1.23,4,4
+   var3_name,1,7,3,,,6,6,3,4,4.2
+   var4_name,...
+   ...
+
+Only the samples without missing values are used to compute 
+the MINE statistics. For instance, var2_name vs. var3_name::
+
+   {8,7, ,5,6,6,6,1.23,4,4  } -> {8,7,6,6,1.23,4,4  }
+   {1,7,3, , ,6,6,3   ,4,4.2} -> {1,7,6,6,3   ,4,4.2}
+
 Usage::
 
     Usage: mine infile [-a <alpha>] [-c <c>] [-o <file>] [-m <var index>] [-p <var1 index> <var2 index>]
