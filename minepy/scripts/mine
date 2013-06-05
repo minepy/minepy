@@ -14,7 +14,8 @@ def compute_stats(data, varname, idx1, idx2, mine, writer):
      """
 
      print "%s vs %s..." % (varname[idx1], varname[idx2])
-     x, y = data[idx1], data[idx2]
+     w = (data[idx1] != '') & (data[idx2] != '')
+     x, y = data[idx1][w].astype(np.float), data[idx2][w].astype(np.float)
      mine.compute_score(x, y)
      r = pearson(x, y)
      writer.writerow([varname[idx1], varname[idx2], mine.mic(), 
@@ -77,7 +78,7 @@ def main():
 
      data = np.loadtxt(args[0], delimiter=',', dtype=str)
      varname = data[:, 0].tolist()
-     data = data[:, 1:].astype(np.float)
+     data = data[:, 1:]
      p, n = data.shape
 
      print "Read file %s: %d variables, %d samples" % (args[0], p, n)
