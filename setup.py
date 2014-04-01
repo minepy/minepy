@@ -10,7 +10,7 @@ except ImportError:
     from distutils.command.build_py import build_py
 
 # extension module arguments
-if get_platform() == "win32":
+if get_platform() == "win32" or get_platform() == "win-amd64":
    libraries = []
 else:
    libraries = ['m']
