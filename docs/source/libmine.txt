@@ -91,10 +91,18 @@ C source files and link your program with ``mine.c``.
 
    Returns the Minimum Cell Number (MCN) with :math:`\epsilon=1 - \mathrm{MIC}`.
 
+.. c:function:: double mine_gmic(mine_score *score)
+
+   Returns the Generalized Mean Information Coefficient (GMIC)
+   described in [Luedtke2013]_.
+
 .. c:function:: void mine_free_score(mine_score **score)
 
    This function frees the memory used by a :c:type:`mine_score`
    and destroys the score structure.
+
+
+
 
 Example
 -------
@@ -145,3 +153,7 @@ for an extensive optimization. Run the example by typing:
    0.308 
    0.321 
    0.333
+
+
+.. [Luedtke2013] Alexander Luedtke, Linh Tran. The Generalized Mean
+   		  Information Coefficient. ArXiv e-prints 1308.5712, 2013

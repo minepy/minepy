@@ -47,6 +47,7 @@ cdef extern from "../libmine/mine.h":
     double mine_mev (mine_score *score)
     double mine_mcn (mine_score *score, double eps)
     double mine_mcn_general (mine_score *score)
+    double mine_gmic (mine_score *score, double p)
     void mine_free_score (mine_score **score)
 
 
@@ -153,6 +154,15 @@ cdef class MINE:
             raise ValueError("no score computed")
         
         return mine_mcn_general(self.score)
+
+    def gmic(self, p=-1):
+        """Returns the Generalized Maximal Information Coefficient (FMIC)
+        """
+
+        if self.score is NULL:
+            raise ValueError("no score computed")
+        
+        return mine_gmic(self.score, p)
     
     @cython.boundscheck(True)
     def get_score(self):

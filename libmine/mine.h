@@ -79,6 +79,9 @@ double mine_mcn(mine_score *score, double eps);
 double mine_mcn_general(mine_score *score);
 
 
+double mine_gmic(mine_score *score, double p);
+
+
 /* Frees the score structure. */
 void mine_free_score(mine_score **score);
 
