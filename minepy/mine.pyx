@@ -41,13 +41,13 @@ cdef extern from "../libmine/mine.h":
     char *libmine_version
          
     mine_score *mine_compute_score (mine_problem *prob, mine_parameter *param) nogil
-    char *mine_check_parameter(mine_parameter *param)
-    double mine_mic (mine_score *score)
-    double mine_mas (mine_score *score)
-    double mine_mev (mine_score *score)
-    double mine_mcn (mine_score *score, double eps)
-    double mine_mcn_general (mine_score *score)
-    double mine_gmic (mine_score *score, double p)
+    char *mine_check_parameter(mine_parameter *param) nogil
+    double mine_mic (mine_score *score) nogil
+    double mine_mas (mine_score *score) nogil
+    double mine_mev (mine_score *score) nogil
+    double mine_mcn (mine_score *score, double eps) nogil
+    double mine_mcn_general (mine_score *score) nogil
+    double mine_gmic (mine_score *score, double p) nogil
     void mine_free_score (mine_score **score) nogil
 
 
