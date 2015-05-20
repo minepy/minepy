@@ -826,22 +826,31 @@ mine_score *mine_compute_score(mine_problem *prob, mine_parameter *param)
       k = MAX((int) (param->c * (score->m[i]+1)), 1);
       
       ret = EquipartitionYAxis(yy, prob->n, i+2, Q_map, &q);
-      
+      if (ret)
+  	goto error_0;
+
       /* sort Q by x */
       for (j=0; j<prob->n; j++)
-	Q_map_temp[iy[j]] = Q_map[j];
+  	Q_map_temp[iy[j]] = Q_map[j];
       for (j=0; j<prob->n; j++)
-	Q_map[j] = Q_map_temp[ix[j]];
+  	Q_map[j] = Q_map_temp[ix[j]];
       
       ret = GetSuperclumpsPartition(xx, prob->n, k, Q_map,
-				    P_map, &p);
+  				    P_map, &p);
       if (ret)
-	goto error_0;
+  	goto error_0;
       
-      ret = OptimizeXAxis(xx, yx, prob->n, Q_map, q, P_map, p,
-			  score->m[i]+1, score->M[i]);
+      if (param->est == EST_MIC_APPROX)
+  	ret = OptimizeXAxis(xx, yx, prob->n, Q_map, q, P_map, p,
+  			    score->m[i]+1, score->M[i]);
+      else /* EST_MIC_E */
+  	ret = OptimizeXAxis(xx, yx, prob->n, Q_map, q, P_map, p,
+  			    MIN(i+2, score->m[i]+1), score->M[i]);
+
+      //printf("i: %i, x: %i , max_y_approx: %i, max_y_e: %i\n", i, i+2, score->m[i]+1, MIN(i+2, score->m[i]+1));
+
       if (ret)
-	goto error_0;
+  	goto error_0;
     }
   
   /* y vs. x */
@@ -850,26 +859,39 @@ mine_score *mine_compute_score(mine_problem *prob, mine_parameter *param)
       k = MAX((int) (param->c * (score->m[i]+1)), 1);
       
       ret = EquipartitionYAxis(xx, prob->n, i+2, Q_map, &q);
-      
+      if (ret)
+  	goto error_0;
+
       /* sort Q by y */
       for (j=0; j<prob->n; j++)
-	Q_map_temp[ix[j]] = Q_map[j];
+  	Q_map_temp[ix[j]] = Q_map[j];
       for (j=0; j<prob->n; j++)
-	Q_map[j] = Q_map_temp[iy[j]];
+  	Q_map[j] = Q_map_temp[iy[j]];
       
       ret = GetSuperclumpsPartition(yy, prob->n, k, Q_map,
-				    P_map, &p);
+  				    P_map, &p);
       if (ret)
-	goto error_0;
+  	goto error_0;
       
-      ret = OptimizeXAxis(yy, xy, prob->n, Q_map, q, P_map, p,
-			  score->m[i]+1, M_temp);
+      if (param->est == EST_MIC_APPROX)
+  	ret = OptimizeXAxis(yy, xy, prob->n, Q_map, q, P_map, p,
+  			    score->m[i]+1, M_temp);
+      else /* EST_MIC_E */
+  	ret = OptimizeXAxis(yy, xy, prob->n, Q_map, q, P_map, p,
+  			    MIN(i+2, score->m[i]+1), M_temp);
+
+      //printf("i: %i, y: %i , max_x_approx: %i, max_x_e: %i\n", i, i+2, score->m[i]+1, MIN(i+2, score->m[i]+1));
+
       if (ret)
-	goto error_0;
+  	goto error_0;
       
-      for (j=0; j<score->m[i]; j++)
-	score->M[j][i] = MAX(M_temp[j], score->M[j][i]);
-    }
+      if (param->est == EST_MIC_APPROX)
+  	for (j=0; j<score->m[i]; j++)
+  	  score->M[j][i] = MAX(M_temp[j], score->M[j][i]);
+      else /* EST_MIC_E */
+  	for (j=0; j<MIN(i+1, score->m[i]); j++)
+  	  score->M[j][i] = M_temp[j];
+   }
   
   free(M_temp);
   free(iy);
@@ -1103,6 +1125,20 @@ double mine_gmic(mine_score *score, double p)
   free(C_star);
 
   return gmic;
+}
+
+
+/* Returns the Total Information Coefficient (TIC). */
+double mine_tic(mine_score *score)
+{
+  int i, j;
+  double tic = 0.0;
+  
+  for (i=0; i<score->n; i++)
+    for (j=0; j<score->m[i]; j++)
+      tic += score->M[i][j];
+       
+  return tic;
 }
 
 

@@ -3,6 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from minepy import MINE
 
+#The power of a statistical test is the probability that it correctly
+#rejects the null hypothesis when the null hypothesis is false.
 
 n_null = 500 # number of null datasets to estimate rejection regions
 n_alt = 500 # number of alternative datasets
@@ -11,7 +13,6 @@ noise = 3
 n = 320 # number of data points
 mine_alpha = 0.6
 mine_c = 15
-
 
 f_names = ["Linear", "Quadratic", "Cubic", "Sine: period 1/2",
           "Sine: period 1/8", "X^(1/4)", "Circle", "Step function"]
@@ -44,19 +45,24 @@ def f8():
 
 
 ff = [f1, f2, f3, f4, f5, f6, f7, f8]
-mine = MINE(alpha=mine_alpha, c=mine_c)
-mic_power = np.empty((len(ff), n_noise))
-gmic_power = np.empty((len(ff), n_noise))
+mine_approx = MINE(alpha=mine_alpha, c=mine_c, est="mic_approx")
+mine_e = MINE(alpha=mine_alpha, c=mine_c, est="mic_e")
+
+mic_approx_power = np.empty((len(ff), n_noise))
+mic_e_power = np.empty((len(ff), n_noise))
+tic_e_power = np.empty((len(ff), n_noise))
 r2_power = np.empty((len(ff), n_noise))
+
 np.random.seed(0)
 for i in range(1, n_noise+1):
     for j, f in enumerate(ff):
-        mic_null, gmic_null, r2_null = [], [], []
-        mic_alt, gmic_alt, r2_alt = [], [], []
+        print "Noise: %d, function: %d" % (i, j)
+        
+        mic_approx_null, mic_e_null, tic_e_null, r2_null = [], [], [], []
+        mic_approx_alt, mic_e_alt, tic_e_alt, r2_alt = [], [], [], []
 
         # null hypothesis
         for k in range(1, n_null+1):
-            print i, j, k
             x = np.random.rand(n)
             r = np.random.randn(n)
             y = f()
@@ -64,9 +70,12 @@ for i in range(1, n_noise+1):
             # resimulate x for the null scenario
             x = np.random.rand(n)
 
-            mine.compute_score(x, y)
-            mic_null.append(mine.mic())
-            gmic_null.append(mine.gmic(p=-1))
+            mine_approx.compute_score(x, y)
+            mine_e.compute_score(x, y)
+            
+            mic_approx_null.append(mine_approx.mic())
+            mic_e_null.append(mine_e.mic())
+            tic_e_null.append(mine_e.tic())
             r2_null.append(np.corrcoef(x, y)[0][1]**2)
 
         # alternative hypothesis
@@ -75,17 +84,22 @@ for i in range(1, n_noise+1):
             r = np.random.randn(n)
             y = f()
 
-            mine.compute_score(x, y)
-            mic_alt.append(mine.mic())
-            gmic_alt.append(mine.gmic(p=-1))
+            mine_approx.compute_score(x, y)
+            mine_e.compute_score(x, y)
+            
+            mic_approx_alt.append(mine_approx.mic())
+            mic_e_alt.append(mine_e.mic())
+            tic_e_alt.append(mine_e.tic())
             r2_alt.append(np.corrcoef(x, y)[0][1]**2)
 
-        cut_mic = np.percentile(mic_null, 95)
-        cut_gmic = np.percentile(gmic_null, 95)
+        cut_mic_approx = np.percentile(mic_approx_null, 95)
+        cut_mic_e = np.percentile(mic_e_null, 95)
+        cut_tic_e = np.percentile(tic_e_null, 95)
         cut_r2 = np.percentile(r2_null, 95)
         
-        mic_power[j, i-1] = np.sum(np.array(mic_alt) > cut_mic) / n_alt
-        gmic_power[j, i-1] = np.sum(np.array(gmic_alt) > cut_gmic) / n_alt
+        mic_approx_power[j, i-1] = np.sum(np.array(mic_approx_alt) > cut_mic_approx) / n_alt
+        mic_e_power[j, i-1] = np.sum(np.array(mic_e_alt) > cut_mic_e) / n_alt
+        tic_e_power[j, i-1] = np.sum(np.array(tic_e_alt) > cut_tic_e) / n_alt
         r2_power[j, i-1] = np.sum(np.array(r2_alt) > cut_r2) / n_alt
         
 fig = plt.figure(1, figsize=(14, 12))
@@ -93,13 +107,14 @@ x_noise = np.linspace(noise/n_noise, noise, n_noise)
 for i in range(len(ff)):
     plt.subplot(4,2,i+1)
     plt.title(f_names[i])
-    plt.plot(x_noise, mic_power[i], label="MIC")
-    plt.plot(x_noise, gmic_power[i], label="GMIC")
+    plt.plot(x_noise, mic_approx_power[i], label="MIC APPROX")
+    plt.plot(x_noise, mic_e_power[i], label="MIC_e")
+    plt.plot(x_noise, tic_e_power[i], label="TIC_e")
     plt.plot(x_noise, r2_power[i], label="cor")
     plt.xlabel("Noise Level")
     plt.ylabel("Power")
-    plt.xlim((0, noise))
-    plt.ylim((0, 1))
+    plt.xlim((0, noise+1))
+    plt.ylim((-0.05, 1.05))
     plt.legend(loc='upper right')
 
 plt.tight_layout()

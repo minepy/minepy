@@ -32,6 +32,7 @@ cdef extern from "../libmine/mine.h":
     ctypedef struct mine_parameter:
          double alpha
          double c
+         int est
 
     ctypedef struct mine_score:
          int n
@@ -48,10 +49,20 @@ cdef extern from "../libmine/mine.h":
     double mine_mcn (mine_score *score, double eps)
     double mine_mcn_general (mine_score *score)
     double mine_gmic (mine_score *score, double p)
+    double mine_tic (mine_score *score)
     void mine_free_score (mine_score **score)
 
+    int EST_MIC_APPROX
+    int EST_MIC_E
 
+    
 version = libmine_version
+
+
+EST = {
+	"mic_approx": EST_MIC_APPROX,
+	"mic_e": EST_MIC_E
+	}
 
 cdef class MINE:
     """Maximal Information-based Nonparametric Exploration.         
@@ -61,7 +72,7 @@ cdef class MINE:
     cdef mine_parameter param
     cdef mine_score *score
     
-    def __cinit__(self, alpha=0.6, c=15):
+    def __cinit__(self, alpha=0.6, c=15, est="mic_approx"):
         """
         :Parameters:
             alpha : float (0, 1.0]
@@ -75,6 +86,7 @@ cdef class MINE:
         
         self.param.c = <double> c
         self.param.alpha = <double> alpha
+        self.param.est = <int> EST[est]
         self.score = NULL
 
         ret = mine_check_parameter(&self.param)
@@ -156,13 +168,22 @@ cdef class MINE:
         return mine_mcn_general(self.score)
 
     def gmic(self, p=-1):
-        """Returns the Generalized Maximal Information Coefficient (FMIC)
+        """Returns the Generalized Maximal Information Coefficient (GMIC)
         """
 
         if self.score is NULL:
             raise ValueError("no score computed")
         
         return mine_gmic(self.score, p)
+
+    def tic(self):
+        """Returns the Total Information Coefficient (TIC)
+        """
+
+        if self.score is NULL:
+            raise ValueError("no score computed")
+        
+        return mine_tic(self.score)
     
     @cython.boundscheck(True)
     def get_score(self):

@@ -38,6 +38,12 @@ class MINE {
 
   /* Returns the Minimum Cell Number (MCN) with eps = 1 - MIC. */
   double mcn_general();
+
+  /* Returns the e Generalized Mean Information Coefficient (GMIC) */
+  double gmic(double p);
+
+  /* Returns the Total Information Coefficient (TIC). */
+  double tic();
 };
 
 #endif /* _CPPMINE_H */

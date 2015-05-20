@@ -3,6 +3,9 @@
 
 #define LIBMINE_VERSION "1.1.0"
 
+#define EST_MIC_APPROX 0
+#define EST_MIC_E 1
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -30,6 +33,7 @@ typedef struct mine_parameter
 {
   double alpha;
   double c;
+  int est;
 } mine_parameter;
 
 
@@ -79,11 +83,16 @@ double mine_mcn(mine_score *score, double eps);
 double mine_mcn_general(mine_score *score);
 
 
+/* Returns the Generalized Mean Information Coefficient (GMIC) */
 double mine_gmic(mine_score *score, double p);
 
 
+/* Returns the Total Information Coefficient (TIC). */
+  double mine_tic(mine_score *score);
+
+
 /* Frees the score structure. */
-void mine_free_score(mine_score **score);
+  void mine_free_score(mine_score **score);
 
 #ifdef __cplusplus
 }

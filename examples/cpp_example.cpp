@@ -18,13 +18,13 @@ main (int argc, char **argv)
   /* build the MINE object with exceptions management */
   try
     {    
-      mine = new MINE(0.6, 15);
+      mine = new MINE(0.6, 15, EST_MIC_APPROX);
     }
   catch (char *s)
     {
       cout << "WARNING: " << s << "\n";	
       cout << "MINE will be set with alpha=0.6 and c=15" << "\n";
-      mine = new MINE(0.6, 15);
+      mine = new MINE(0.6, 15, EST_MIC_APPROX);
     }
   
   /* build the problem */

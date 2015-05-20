@@ -1,6 +1,13 @@
 CHANGES
 =======
 
+1.1.0
+-----
+* libmine, C++, and Python API: Generalized Mean Information Coefficient (GMIC) added
+* libmine, C++, and Python API: MIC_e and TIC estimators added
+* Python API: nogil added to computationally intensive parts (thanks to Adrin
+  Jalali - adrinjalali)
+
 1.0.0
 -----
 * libmine: core.h included in mine.h

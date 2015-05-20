@@ -5,12 +5,13 @@
 using namespace std;
 
 
-MINE::MINE(double alpha, double c)
+MINE::MINE(double alpha, double c, int est)
 {
   char *ret;
   
   param.alpha = alpha;
   param.c = c;
+  param.est = est
   score = NULL;
   
   ret = mine_check_parameter(&param);
@@ -86,4 +87,24 @@ double MINE::mcn_general()
     throw ret;
   
   return mine_mcn_general(score);
+}
+
+
+double MINE::gmic(double p)
+{
+  char *ret = "no score computed";
+  if (score == NULL)
+    throw ret;
+  
+  return mine_gmic(score, p);
+}
+
+
+double MINE::tic()
+{
+  char *ret = "no score computed";
+  if (score == NULL)
+    throw ret;
+  
+  return mine_tic(score);
 }

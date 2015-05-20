@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include <time.h>
 #include "mine.h"
 
 
@@ -17,8 +18,9 @@ int main (int argc, char **argv)
   //printf("libmine version %d\n\n", libmine_version);
  
   /* set the parameters */
-  param.alpha = 0.6;
-  param.c = 15;
+  param.alpha = 0.60;
+  param.c = 1;
+  param.est = EST_MIC_E;
   
   /* check the parameters */ 
   ret = mine_check_parameter(&param);
@@ -29,7 +31,7 @@ int main (int argc, char **argv)
     }
 
   /* build the problem */
-  prob.n = 201;
+  prob.n = 10001;
   prob.x = (double *) malloc (prob.n * sizeof (double));
   prob.y = (double *) malloc (prob.n * sizeof (double));
   for (i=0; i<prob.n; i++)
@@ -38,24 +40,26 @@ int main (int argc, char **argv)
       prob.x[i] = (double) i / (double) (prob.n-1);
 
       /* build y = sin(10 * pi * x) + x */
-      prob.y[i] = sin(10 * PI * prob.x[i]) + prob.x[i]; 
+      prob.y[i] = sin(10 * PI * prob.x[i]) + prob.x[i];
     }
   
   /* compute score */
+  clock_t start = clock();
   score = mine_compute_score(&prob, &param);
+  clock_t end = clock();
+  printf("Elapsed time: %.6f seconds\n", (double)(end - start) / CLOCKS_PER_SEC);
+  
   if (score == NULL)
     {
       printf("ERROR: mine_compute_score()\n");
       return 1;
     }
   
-  /* print the MINE statistics */
+  /* print some MINE statistics */
   printf ("MINE statistics:\n\n");
   printf ("MIC: %.3lf\n", mine_mic(score));
-  printf ("MAS: %.3lf\n", mine_mas(score));
   printf ("MEV: %.3lf\n", mine_mev(score));
   printf ("MCN (eps=0): %.3lf\n", mine_mcn(score, 0));
-  printf ("MCN (eps=1-MIC): %.3lf\n", mine_mcn_general(score));
 
   /* print the characteristic matrix M */
   printf ("\nCharacteristic Matrix:\n\n");

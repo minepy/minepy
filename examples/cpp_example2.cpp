@@ -13,7 +13,7 @@ main (int argc, char **argv)
   double y[] = {1.,2.,3.,4.,3.,2.,1.};
   
   /* build the MINE object */
-  MINE mine(0.6, 15);
+  MINE mine(0.6, 15, EST_MIC_APPROX);
 
   /* compute score */
   mine.compute_score(x, y, n);
