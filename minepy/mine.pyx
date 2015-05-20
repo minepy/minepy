@@ -41,16 +41,16 @@ cdef extern from "../libmine/mine.h":
 
     char *libmine_version
          
-    mine_score *mine_compute_score (mine_problem *prob, mine_parameter *param)
-    char *mine_check_parameter(mine_parameter *param)
-    double mine_mic (mine_score *score)
-    double mine_mas (mine_score *score)
-    double mine_mev (mine_score *score)
-    double mine_mcn (mine_score *score, double eps)
-    double mine_mcn_general (mine_score *score)
-    double mine_gmic (mine_score *score, double p)
-    double mine_tic (mine_score *score)
-    void mine_free_score (mine_score **score)
+    mine_score *mine_compute_score (mine_problem *prob, mine_parameter *param) nogil
+    char *mine_check_parameter(mine_parameter *param) nogil
+    double mine_mic (mine_score *score) nogil
+    double mine_mas (mine_score *score) nogil
+    double mine_mev (mine_score *score) nogil
+    double mine_mcn (mine_score *score, double eps) nogil
+    double mine_mcn_general (mine_score *score) nogil
+    double mine_gmic (mine_score *score, double p) nogil
+    double mine_tic (mine_score *score) nogil
+    void mine_free_score (mine_score **score) nogil
 
     int EST_MIC_APPROX
     int EST_MIC_E
@@ -97,10 +97,9 @@ cdef class MINE:
         """Computes the maximum normalized mutual information scores
         between `x` and `y`.
         """
-
         cdef int i, j
         cdef np.ndarray[np.float_t, ndim=1] xa, ya
-        
+
         xa = np.ascontiguousarray(x, dtype=np.float)
         ya = np.ascontiguousarray(y, dtype=np.float)
 
@@ -110,13 +109,16 @@ cdef class MINE:
         self.prob.n = <int> xa.shape[0]
         self.prob.x = <double *> xa.data
         self.prob.y = <double *> ya.data
-        
-        self._free_score()
-        self.score = mine_compute_score(&self.prob, &self.param)
+
+        with nogil:
+
+            self._free_score()
+            self.score = mine_compute_score(&self.prob, &self.param)
+
         if self.score is NULL:
             raise ValueError("problem with mine_compute_score()")
 
-    cdef void _free_score(self):
+    cdef void _free_score(self) nogil:
         mine_free_score(&self.score)
 
     def __dealloc__(self):
