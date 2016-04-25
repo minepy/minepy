@@ -950,6 +950,9 @@ char *mine_check_parameter(mine_parameter *param)
   if (param->c <= 0.0)
     return "c must be > 0.0";
   
+  if ((param->est != 0) && (param->est != 1))
+      return "est must be in {0, 1}";
+
   return NULL;
 }
 
