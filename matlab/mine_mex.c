@@ -66,8 +66,8 @@ void mexFunction(int nlhs, mxArray *plhs[],
     mexErrMsgTxt("c must be a scalar.");
 
   /* make sure the fifth input argument (est) is scalar */
-  if(!mxIsDouble(prhs[3]) || mxIsComplex(prhs[3]) ||
-     mxGetNumberOfElements(prhs[3]) != 1)
+  if(!mxIsDouble(prhs[4]) || mxIsComplex(prhs[4]) ||
+     mxGetNumberOfElements(prhs[4]) != 1)
     mexErrMsgTxt("c must be a scalar.");
 
   /* get alpha, c and est */
