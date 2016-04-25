@@ -1,4 +1,4 @@
-function [minestats, M] = mine(x, y, alpha, c)
+function [minestats, M] = mine(x, y, alpha, c, est)
 % MINE  Maximal Information-based Nonparametric Exploration
 %   
 %   Returns a struct containing MIC, MAS, MEV, MCN (eps=0) and
@@ -30,18 +30,26 @@ function [minestats, M] = mine(x, y, alpha, c)
 %           mcn: 4.5850
 %   mcn_general: 4.5850
 
-switch nargin
-    case 3
-	c = 15;
-    case 2
-        alpha = 0.6;
-        c = 15;
+if nargin<5
+    est = 'mic_approx';
+end
+if nargin<4
+    c = 15;
+end
+if nargin<3
+    alpha = 0.6;
+end
+
+if strcmpi(est, 'mic_approx')
+    e = 0;
+else
+    e = 1;
 end
 
 if nargout==1
-    A = mine_mex(x, y, alpha, c);
+    A = mine_mex(x, y, alpha, c, e);
 else
-    [A, M] = mine_mex(x,y,alpha,c);
+    [A, M] = mine_mex(x, y, alpha, c, e);
 end
 minestats.mic = A(1);
 minestats.mas = A(2);

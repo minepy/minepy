@@ -28,7 +28,7 @@ void mexFunction(int nlhs, mxArray *plhs[],
 {
   double *x, *y;
   double alpha;
-  int c;
+  int c, est;
   
   mwSize ncolsx, ncolsy;
   
@@ -44,7 +44,7 @@ void mexFunction(int nlhs, mxArray *plhs[],
     mexErrMsgTxt("Too many output arguments.");
 
   /* check for proper number of arguments */
-  if(nrhs != 4)
+  if(nrhs != 5)
     mexErrMsgTxt("Incorrect number of inputs.");
    
   /* check that number of rows in first input argument (x) is 1 */
@@ -64,10 +64,16 @@ void mexFunction(int nlhs, mxArray *plhs[],
   if(!mxIsDouble(prhs[3]) || mxIsComplex(prhs[3]) ||
      mxGetNumberOfElements(prhs[3]) != 1) 
     mexErrMsgTxt("c must be a scalar.");
-  
-  /* get alpha and c */
+
+  /* make sure the fifth input argument (est) is scalar */
+  if(!mxIsDouble(prhs[3]) || mxIsComplex(prhs[3]) ||
+     mxGetNumberOfElements(prhs[3]) != 1)
+    mexErrMsgTxt("c must be a scalar.");
+
+  /* get alpha, c and est */
   alpha = mxGetScalar(prhs[2]);
   c = mxGetScalar(prhs[3]);
+  est = (int) mxGetScalar(prhs[4]);
   
   /* create a pointers for X and Y */
   x = mxGetPr(prhs[0]);
@@ -82,6 +88,7 @@ void mexFunction(int nlhs, mxArray *plhs[],
   /* build param */
   param.alpha = alpha;
   param.c = c;
+  param.est = est;
 
   /* check param */
   ret = mine_check_parameter(&param);
