@@ -40,8 +40,8 @@ void mexFunction(int nlhs, mxArray *plhs[],
 
   
   /* check for proper number of outputs */
-  if(nlhs != 1)
-    mexErrMsgTxt("One output required.");
+  if(nlhs > 2)
+    mexErrMsgTxt("Too many output arguments.");
 
   /* check for proper number of arguments */
   if(nrhs != 4)
@@ -106,6 +106,22 @@ void mexFunction(int nlhs, mxArray *plhs[],
   out[2] = mine_mev(score);
   out[3] = mine_mcn(score, 0);
   out[4] = mine_mcn_general(score);
+
+  /* return full characteristic matrix */
+  if (nlhs>1)
+    {
+      mwSize i, j, nrows, ncols;
+      nrows = score->n;
+      ncols = score->m[0];
+      plhs[1] = mxCreateDoubleMatrix(nrows, ncols, mxREAL);
+      out = mxGetPr(plhs[1]);
+
+      for (i=0; i<nrows; i++)
+        {
+          for (j=0; j<score->m[i]; j++)
+            out[nrows*j + i] = score->M[i][j];
+        }
+    }
 
   mine_free_score(&score);
 }
