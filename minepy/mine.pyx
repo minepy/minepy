@@ -82,6 +82,13 @@ cdef class MINE:
                 columns in every partition. Default value is 15, meaning
                 that when trying to draw x grid lines on the x-axis,
                 the algorithm will start with at most 15*x clumps
+            est : str ("mic_approx", "mic_e")
+                specifies the estimator used to obtain the MIC values
+                "mic_approx" is the original MIC estimate defined in Reshef
+                et al. (2011)
+                "mic_e" is the estimator presented in Reshef et al. (2015)
+                arXiv:1505.02213v2)
+
         """
         
         self.param.c = <double> c

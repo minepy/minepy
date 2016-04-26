@@ -21,14 +21,16 @@
 
 
 /* The gateway function
- * [MIC, MAS, MEV, MCN, MCN_GENERAL] = MINE_MEX(X, Y, ALPHA, C)
+ *  [A, M] = MINE_MEX(X, Y, ALPHA, C, EST)
+ *  A = [MIC, MAS, MEV, MCN, MCN_GENERAL, TIC]
+ *  M (optional) = characteristic matrix (square dense matrix)
  */
 void mexFunction(int nlhs, mxArray *plhs[],
 		 int nrhs, const mxArray *prhs[])
 {
   double *x, *y;
   double alpha;
-  int c;
+  int c, est;
   
   mwSize ncolsx, ncolsy;
   
@@ -40,11 +42,11 @@ void mexFunction(int nlhs, mxArray *plhs[],
 
   
   /* check for proper number of outputs */
-  if(nlhs != 1)
-    mexErrMsgTxt("One output required.");
+  if(nlhs > 2)
+    mexErrMsgTxt("Too many output arguments.");
 
   /* check for proper number of arguments */
-  if(nrhs != 4)
+  if(nrhs != 5)
     mexErrMsgTxt("Incorrect number of inputs.");
    
   /* check that number of rows in first input argument (x) is 1 */
@@ -64,10 +66,16 @@ void mexFunction(int nlhs, mxArray *plhs[],
   if(!mxIsDouble(prhs[3]) || mxIsComplex(prhs[3]) ||
      mxGetNumberOfElements(prhs[3]) != 1) 
     mexErrMsgTxt("c must be a scalar.");
-  
-  /* get alpha and c */
+
+  /* make sure the fifth input argument (est) is scalar */
+  if(!mxIsDouble(prhs[4]) || mxIsComplex(prhs[4]) ||
+     mxGetNumberOfElements(prhs[4]) != 1)
+    mexErrMsgTxt("est must be a scalar.");
+
+  /* get alpha, c and est */
   alpha = mxGetScalar(prhs[2]);
   c = mxGetScalar(prhs[3]);
+  est = (int) mxGetScalar(prhs[4]);
   
   /* create a pointers for X and Y */
   x = mxGetPr(prhs[0]);
@@ -82,6 +90,7 @@ void mexFunction(int nlhs, mxArray *plhs[],
   /* build param */
   param.alpha = alpha;
   param.c = c;
+  param.est = est;
 
   /* check param */
   ret = mine_check_parameter(&param);
@@ -99,13 +108,30 @@ void mexFunction(int nlhs, mxArray *plhs[],
     mexErrMsgTxt("Problem with mine_compute_score().");
 
   /* build the output array*/
-  plhs[0] = mxCreateDoubleMatrix(1, 5, mxREAL);
+  plhs[0] = mxCreateDoubleMatrix(1, 6, mxREAL);
   out = mxGetPr(plhs[0]);
   out[0] = mine_mic(score);
   out[1] = mine_mas(score);
   out[2] = mine_mev(score);
   out[3] = mine_mcn(score, 0);
   out[4] = mine_mcn_general(score);
+  out[5] = mine_tic(score);
+
+  /* return full characteristic matrix */
+  if (nlhs>1)
+    {
+      mwSize i, j, nrows, ncols;
+      nrows = score->n;
+      ncols = score->m[0];
+      plhs[1] = mxCreateDoubleMatrix(nrows, ncols, mxREAL);
+      out = mxGetPr(plhs[1]);
+
+      for (i=0; i<nrows; i++)
+        {
+          for (j=0; j<score->m[i]; j++)
+            out[nrows*j + i] = score->M[i][j];
+        }
+    }
 
   mine_free_score(&score);
 }
