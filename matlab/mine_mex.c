@@ -21,7 +21,9 @@
 
 
 /* The gateway function
- * [MIC, MAS, MEV, MCN, MCN_GENERAL] = MINE_MEX(X, Y, ALPHA, C)
+ *  [A, M] = MINE_MEX(X, Y, ALPHA, C, EST)
+ *  A = [MIC, MAS, MEV, MCN, MCN_GENERAL, TIC]
+ *  M (optional) = characteristic matrix (square dense matrix)
  */
 void mexFunction(int nlhs, mxArray *plhs[],
 		 int nrhs, const mxArray *prhs[])

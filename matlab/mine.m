@@ -4,11 +4,19 @@ function [minestats, M] = mine(x, y, alpha, c, est)
 %   Returns a struct containing MIC, MAS, MEV, MCN (eps=0) and
 %   MCN_GENERAL (eps=1-MIC).
 %
-%   MINESTATS = MINE(X, Y, ALPHA, C) computes the MINE statistics
+%   MINESTATS = MINE(X, Y, ALPHA, C, EST) computes the MINE statistics
 %   between X and Y. X and Y must be row vectors of size n.
 %   Alpha is the exponent in B(n) = n^alpha and must be in (0, 1.0].
 %   Parameter c determines how many more clumps there will be than 
 %   columns in every partition and must be > 0.
+%   Est is a string defining the estimation method.
+%   'mic_approx' is the original MIC estimate defined in 
+%   Reshef et al. (2011)
+%   'mic_e' is the estimator presented in Reshef et al. (2015) 
+%   (arXiv:1505.02213v2)
+%
+%   MINESTATS = MINE(X, Y, ALPHA, C) computes the MINE statistics
+%   between X and Y. Default value of EST is 'mic_approx'.
 %
 %   MINESTATS = MINE(X, Y, ALPHA) computes the MINE statistics
 %   between X and Y. Default value of c is 15.
@@ -29,6 +37,7 @@ function [minestats, M] = mine(x, y, alpha, c, est)
 %           mev: 1
 %           mcn: 4.5850
 %   mcn_general: 4.5850
+%           tic: 67.661
 
 if nargin<5
     est = 'mic_approx';
