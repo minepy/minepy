@@ -106,13 +106,14 @@ void mexFunction(int nlhs, mxArray *plhs[],
     mexErrMsgTxt("Problem with mine_compute_score().");
 
   /* build the output array*/
-  plhs[0] = mxCreateDoubleMatrix(1, 5, mxREAL);
+  plhs[0] = mxCreateDoubleMatrix(1, 6, mxREAL);
   out = mxGetPr(plhs[0]);
   out[0] = mine_mic(score);
   out[1] = mine_mas(score);
   out[2] = mine_mev(score);
   out[3] = mine_mcn(score, 0);
   out[4] = mine_mcn_general(score);
+  out[5] = mine_tic(score);
 
   /* return full characteristic matrix */
   if (nlhs>1)

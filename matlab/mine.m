@@ -56,3 +56,4 @@ minestats.mas = A(2);
 minestats.mev = A(3);
 minestats.mcn = A(4);
 minestats.mcn_general = A(5);
+minestats.tic = A(6);
