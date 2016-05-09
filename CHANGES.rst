@@ -3,6 +3,7 @@ CHANGES
 
 1.1.0
 -----
+* Matlab API: MIC_e and TIC estimators added (thanks to Robin Ince - robince)
 * libmine, C++, and Python API: MIC_e and TIC estimators added
 * libmine, C++, and Python API: Generalized Mean Information Coefficient (GMIC) added
 * Python API: nogil added to computationally intensive parts (thanks to Adrin
