@@ -12,21 +12,21 @@ main (int argc, char **argv)
   int i, n;
   double *x, *y;
   MINE *mine;
-  
+
   PI = 3.14159265;
-  
+
   /* build the MINE object with exceptions management */
   try
-    {    
+    {
       mine = new MINE(0.6, 15, EST_MIC_APPROX);
     }
   catch (char *s)
     {
-      cout << "WARNING: " << s << "\n";	
+      cout << "WARNING: " << s << "\n";
       cout << "MINE will be set with alpha=0.6 and c=15" << "\n";
       mine = new MINE(0.6, 15, EST_MIC_APPROX);
     }
-  
+
   /* build the problem */
   n = 1001;
   x = new double [n];
@@ -37,9 +37,9 @@ main (int argc, char **argv)
       x[i] = (double) i / (double) (n-1);
 
       /* build y = sin(10 * pi * x) + x */
-      y[i] = sin(10 * PI * x[i]) + x[i]; 
+      y[i] = sin(10 * PI * x[i]) + x[i];
     }
-  
+
   /* compute score with exceptions management */
   try
     {
@@ -65,13 +65,13 @@ main (int argc, char **argv)
       cout << "ERROR: " << s << "\n";
       return 1;
     }
-  
+
   /* delete the mine object */
   delete mine;
-  
+
   /* free the problem */
   delete [] x;
   delete [] y;
-  
+
   return 0;
 }

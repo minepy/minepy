@@ -69,7 +69,10 @@ Spellman Gene Expression dataset
 Compute the MINE statistics for variable #1 (time) vs. all the other
 variables, with alpha=0.67 and c=15.
 
-  1. `Download <http://sourceforge.net/projects/minepy/files/data/MLB2008.csv/download>`_ the dataset
+  1. Download the `Spellman
+     <http://sourceforge.net/projects/minepy/files/data/Spellman.csv/download>`_
+     dataset
+  
   2. From a terminal, run::
   
 	$ mine Spellman.csv -a 0.67 -c 15 -m 1 -o Spellman_MINE.txt
@@ -81,7 +84,10 @@ Baseball dataset
 Compute the MINE statistics all pairs of variables against each other,
 with alpha=0.7 and c=15.
 
-  1. `Download <http://sourceforge.net/projects/minepy/files/data/MLB2008.csv/download>`_ the dataset
+  1. Download the `MLB2008
+     <http://sourceforge.net/projects/minepy/files/data/MLB2008.csv/download>`_
+     dataset
+
   2. From a terminal, run::
   
 	$ mine MLB2008.csv -a 0.7 -c 15 -o MLB2008_MINE.txt
@@ -93,7 +99,10 @@ Microbiome dataset
 Compute the MINE statistics all pairs of variables against each other,
 with alpha=0.551 and c=10.
 
-  1. `Download <http://sourceforge.net/projects/minepy/files/data/Microbiome.csv/download>`_ the dataset
+  1. Download the `Microbiome
+     <http://sourceforge.net/projects/minepy/files/data/Microbiome.csv/download>`_
+     dataset
+
   2. From a terminal, run::
   
 	$ mine Microbiome.csv -a 0.551 -c 10 -o Microbiome_MINE.txt

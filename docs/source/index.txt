@@ -8,10 +8,11 @@ Welcome to minepy's documentation!
 
 minepy provides an ANSI C library (with C++, Python and MATLAB/OCTAVE
 wrappers) for Maximal Information-based Nonparametric Exploration (MIC
-and MINE family). minepy contains: 
-       
+and MINE family). minepy contains:
+
+  * APPROX-MIC and :math:`MIC_e` estimators,
   * an **ANSI C** core API (``libmine``),
-  * a C++ interface,       
+  * a C++ interface,
   * an efficient Python API,
   * an efficient MATLAB/OCTAVE API,
   * a command-line application similar to the original ``MINE.jar``.
@@ -24,7 +25,7 @@ Contents:
 
 .. toctree::
    :maxdepth: 2
-   
+
    details
    install
    libmine
@@ -32,11 +33,10 @@ Contents:
    python
    matlab
    application
-   
+
 Indices and tables
 ==================
 
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-

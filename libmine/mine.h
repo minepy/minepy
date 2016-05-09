@@ -9,7 +9,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-  
+
 extern char *libmine_version;
 
 /* The mine_problem structure describes the problem. */
@@ -28,7 +28,8 @@ typedef struct mine_problem
 /* be than columns in every partition. c = 15 meaning that  */
 /* when trying to draw x grid lines on the x-axis, the  */
 /* algorithm will start with at most 15*x clumps. c must  */
-/* be > 0. */
+/* be > 0. Est is the estimator, EST_MIC_APPROX (0) and */
+/* EST_MIC_E (1). */
 typedef struct mine_parameter
 {
   double alpha;
@@ -48,16 +49,16 @@ typedef struct mine_score
   int *m; /* number of cols of M[i] for each i */
   double **M; /* the approx. characteristic matrix */
 } mine_score;
-  
-  
-/* Computes the maximum normalized mutual information scores and 
+
+
+/* Computes the maximum normalized mutual information scores and
  * returns a mine_score structure. Returns NULL if an error occurs.
  */
 mine_score *mine_compute_score(mine_problem *prob, mine_parameter *param);
-  
 
-/* This function checks the parameters. It should be called 
- * before calling mine_compute_score(). It returns NULL if 
+
+/* This function checks the parameters. It should be called
+ * before calling mine_compute_score(). It returns NULL if
  * the parameters are feasible, otherwise an error message is returned.
  */
 char *mine_check_parameter(mine_parameter *param);
@@ -88,11 +89,11 @@ double mine_gmic(mine_score *score, double p);
 
 
 /* Returns the Total Information Coefficient (TIC). */
-  double mine_tic(mine_score *score);
+double mine_tic(mine_score *score);
 
 
 /* Frees the score structure. */
-  void mine_free_score(mine_score **score);
+void mine_free_score(mine_score **score);
 
 #ifdef __cplusplus
 }

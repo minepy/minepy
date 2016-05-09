@@ -25,8 +25,7 @@ def mysubplot(x, y, numRows, numCols, plotNum,
     return ax
 
 def rotation(xy, t):
-    return np.dot(xy, [[np.cos(t), -np.sin(t)],
-                       [np.sin(t), np.cos(t)]])
+    return np.dot(xy, [[np.cos(t), -np.sin(t)], [np.sin(t), np.cos(t)]])
 
 def mvnormal(n=1000):
     cors = [1.0, 0.8, 0.4, 0.0, -0.4, -0.8, -1.0]
@@ -48,7 +47,7 @@ def others(n=1000):
     x = rs.uniform(-1, 1, n)
     y = 4*(x**2-0.5)**2 + rs.uniform(-1, 1, n)/3
     mysubplot(x, y, 3, 7, 15, (-1, 1), (-1/3, 1+1/3))
-    
+
     y = rs.uniform(-1, 1, n)
     xy = np.concatenate((x.reshape(-1, 1), y.reshape(-1, 1)), axis=1)
     xy = rotation(xy, -np.pi/8)
@@ -58,10 +57,10 @@ def others(n=1000):
     xy = rotation(xy, -np.pi/8)
     lim = np.sqrt(2)
     mysubplot(xy[:, 0], xy[:, 1], 3, 7, 17, (-lim, lim), (-lim, lim))
-    
+
     y = 2*x**2 + rs.uniform(-1, 1, n)
     mysubplot(x, y, 3, 7, 18, (-1, 1), (-1, 3))
-    
+
     y = (x**2 + rs.uniform(0, 0.5, n)) * \
         np.array([-1, 1])[rs.random_integers(0, 1, size=n)]
     mysubplot(x, y, 3, 7, 19, (-1.5, 1.5), (-1.5, 1.5))

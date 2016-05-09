@@ -8,66 +8,77 @@ structures are declared in the header file ``mine.h``, located in the
 ``libmine/`` folder. You need to add ``#include "mine.h"`` in your
 C source files and link your program with ``mine.c``.
 
+.. c:var:: EST_MIC_APPROX 0
+
+   Original estimator described in DOI: 10.1126/science.1205438.
+
+.. c:var:: EST_MIC_E 1
+
+   Estimator described in DOI: arXiv:1505.02213 and DOI: arXiv:1505.02214.
+
 .. c:var:: char *libmine_version
-   
+
    The libmine version in the form X.Y.Z (e.g., 1.0.1).
 
 .. c:type:: mine_problem
-   
+
    The :c:type:`mine_problem` structure describes the problem.
 
    .. code-block:: c
 
       typedef struct mine_problem {
          int n;
-  	 double *x;
-  	 double *y;
+  	     double *x;
+  	     double *y;
       } mine_problem;
-      
+
    where of x and y are the two variables of length n.
-      
+
 .. c:type:: mine_parameter
 
    The :c:type:`mine_parameter` structure describes the MINE parameters.
 
    .. code-block:: c
-      
+
       typedef struct mine_parameter {
          double alpha;
          double c;
+	 int est;
       } mine_parameter;
- 
-   where alpha is the exponent in :math:`B(n) = n^\alpha` and must be in 
-   :math:`(0,1]`, and c determines how many more clumps there will be 
-   than columns in every partition. c = 15 meaning that when trying 
-   to draw x grid lines on the x-axis, the algorithm will start with at 
-   most :math:`15 x` clumps. c must be > 0.
+
+   where alpha is the exponent in :math:`B(n) = n^\alpha` and must be in
+   :math:`(0,1]`, and c determines how many more clumps there will be
+   than columns in every partition. c = 15 meaning that when trying
+   to draw x grid lines on the x-axis, the algorithm will start with at
+   most :math:`15 x` clumps. c must be > 0. est is the estimator and
+   can be EST_MIC_APPROX (described in DOI: 10.1126/science.1205438)
+   or EST_MIC_E (described in DOI: arXiv:1505.02213 and DOI: arXiv:1505.02214).
 
 .. c:type:: mine_score
-   
-   The :c:type:`mine_score` structure contains the maximum normalized 
+
+   The :c:type:`mine_score` structure contains the maximum normalized
    mutual information scores.
 
    .. code-block:: c
-   
+
       typedef struct mine_score {
           int n; /* number of rows of M */
           int *m; /* number of cols of M[i] for each i */
 	  double **M; /* the approx. characteristic matrix */
       } mine_score;
-      
+
    where M[i][j] contains the score using a grid partitioning x-values
    into i+2 bins and y-values into j+2 bins.
    m and M are of length n and each M[i] is of length m[i].
 
 .. c:function:: mine_score *mine_compute_score(mine_problem *prob, mine_parameter *param)
-   
+
    Computes the maximum normalized mutual information scores and returns
    a :c:type:`mine_score` structure. Returns NULL if an error occurs.
 
 .. c:function:: char *mine_check_parameter(mine_parameter *param)
-   
-   This function checks the parameters. It should be called before using 
+
+   This function checks the parameters. It should be called before using
    :c:func:`mine_compute_score`. It returns NULL if the parameters are
    feasible, otherwise an error message is returned.
 
@@ -94,14 +105,17 @@ C source files and link your program with ``mine.c``.
 .. c:function:: double mine_gmic(mine_score *score)
 
    Returns the Generalized Mean Information Coefficient (GMIC)
-   described in [Luedtke2013]_.
+   described in DOI: arXiv:1308.5712 .
+
+.. c:function:: double mine_tic(mine_score *score)
+
+   Returns the Total Information Coefficient (TIC), described in
+   in DOI: arXiv:1505.02213 and DOI: arXiv:1505.02214.
 
 .. c:function:: void mine_free_score(mine_score **score)
 
    This function frees the memory used by a :c:type:`mine_score`
    and destroys the score structure.
-
-
 
 
 Example
@@ -119,7 +133,7 @@ To compile the example, open a terminal, go into the example
 
    $ gcc c_example.c -Wall ../libmine/mine.c -I../libmine/ -lm
 
-or 
+or
 
 .. code-block:: sh
 
@@ -129,31 +143,26 @@ for an extensive optimization. Run the example by typing:
 
 .. code-block:: sh
 
-   $ ./a.out
-   libmine version 100
-   
-   MINE statistics:
+    $ ./a.out
+    libmine version 1.1.0
+    Elapsed time: 0.011288 seconds
 
-   MIC: 1.000
-   MAS: 0.667
-   MEV: 1.000
-   MCN (eps=0): 4.585
-   MCN (eps=1-MIC): 4.585
+    Some MINE statistics:
 
-   Characteristic Matrix:
+    MIC: 1.000
+    MEV: 1.000
+    MCN (eps=0): 4.585
 
-   0.108 0.146 0.226 0.347 0.434 0.545 0.639 0.740 0.863 0.932 1.000 
-   0.199 0.138 0.169 0.256 0.298 0.379 0.427 
-   0.237 0.190 0.217 0.286 0.324 
-   0.247 0.198 0.191 
-   0.262 0.213 0.232 
-   0.272 0.225 
-   0.286 0.237 
-   0.296 
-   0.308 
-   0.321 
-   0.333
+    Characteristic Matrix:
 
-
-.. [Luedtke2013] Alexander Luedtke, Linh Tran. The Generalized Mean
-   		  Information Coefficient. ArXiv e-prints 1308.5712, 2013
+    0.108 0.146 0.226 0.347 0.434 0.545 0.639 0.740 0.863 0.932 1.000
+    0.199 0.138 0.169 0.256 0.298 0.379 0.427
+    0.237 0.190 0.217 0.286 0.324
+    0.247 0.198 0.191
+    0.262 0.213 0.232
+    0.272 0.225
+    0.286 0.237
+    0.296
+    0.308
+    0.321
+    0.333

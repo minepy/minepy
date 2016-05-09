@@ -1,16 +1,17 @@
-Implementation Details
-======================
+APPROX-MIC Implementation Details
+=================================
 
 The core implementation of libmine is built from scratch in ANSI C
-starting from the pseudocode provided in [Reshef11]_ Supplementary
-On-line Material (SOM), as no original Java source code is available.
-The level of detail of the pseudocode leaves a few ambiguities and in
+starting from the pseudocode provided in DOI: 10.1126/science.1205438,
+Supplementary On-line Material (SOM), as no original Java source code is
+available. The level of detail of the pseudocode leaves a few ambiguities and in
 this section we list and comment the most crucial choices we adopted
 for the algorithm steps whenever no explicit description was
 provided. Obviously, our choices are not necessarily the same as in
 the original Java version (MINE.jar, http://www.exploredata.net/). The
 occurring differences can be ground for small numerical discrepancies
-as well as for difference in performance. See [Albanese13]_.
+as well as for difference in performance. See DOI:
+10.1093/bioinformatics/bts707.
 
 #. In SOM, Algorithm 5, the characteristic matrix :math:`M` is
    computed in the loop starting at line 7 for :math:`xy\leq B`. This
@@ -18,7 +19,7 @@ as well as for difference in performance. See [Albanese13]_.
    Sec. 2) where the corresponding bound is :math:`xy<B` for all the
    four statistics. We adopted the same bound as in the pseudocode,
    *i.e.* :math:`xy\leq B`.
-    
+
 #. The MINE statistic MCN is defined as follows in SOM, Sec. 2:
 
     .. math::
@@ -32,8 +33,8 @@ as well as for difference in performance. See [Albanese13]_.
    implement the formula:
 
     .. math::
-      
-       \textrm{MCN}(D,0) = \min_{xy\leq B} \{\log_2(xy)\colon M(D)_{x,y} 
+
+       \textrm{MCN}(D,0) = \min_{xy\leq B} \{\log_2(xy)\colon M(D)_{x,y}
        = \textrm{MIC}(D)\},
 
    being :math:`\textrm{MIC}(D)` the maximum value of the matrix
@@ -59,7 +60,7 @@ as well as for difference in performance. See [Albanese13]_.
    :math:`\min\{\log x,\log \hat{y}\}`.
 
 #. The function GetClumpsPartition(:math:`D,Q`) is discussed
-   ([Reshef11]_, SOM page 12), but its pseudocode is not explicitely
+   (SOM page 12), but its pseudocode is not explicitely
    available. Our implementation is defined here in
    :ref:`getclumpspartition`. The function returns the map :math:`P`
    defining the clumps for the set :math:`D`, with the constraint of
@@ -69,11 +70,11 @@ as well as for difference in performance. See [Albanese13]_.
 
    .. figure:: images/alg1.png
       :align: center
-   
+
       GetClumpsPartition() algorithm
 
 #. We also explicitly provide the pseudocode for the
-   GetSuperclumpsPartition() function (discussed in [Reshef11]_, SOM
+   GetSuperclumpsPartition() function (SOM
    page 13) in :ref:`getsuperclumpspartition`. This function limits
    the number of clumps when their number `k` is larger than a given
    bound :math:`\hat{k}`.  The function calls the GetClumpsPartition()
@@ -85,7 +86,7 @@ as well as for difference in performance. See [Albanese13]_.
 
    .. figure:: images/alg2.png
       :align: center
-   
+
       GetSuperclumpsPartition() algorithm
 
 #. We observed that the GetSuperclumpsPartition() implemented in
@@ -93,7 +94,7 @@ as well as for difference in performance. See [Albanese13]_.
    maximum number of clumps and a map :math:`P` with :math:`\hat{k}+1`
    superclumps is actually returned. As an example, the MINE.jar
    applied in debug mode (d=4 option) with the same parameters
-   (:math:`\alpha=0.551`, :math:`c=10`) used in [Reshef11]_ to the
+   (:math:`\alpha=0.551`, :math:`c=10`) used in the original work to the
    pair of variables (OTU4435,OTU4496) of the Microbioma dataset,
    returns :math:`cx+1` clumps, instead of stopping at the bound
    :math:`\hat{k}=cx` for :math:`x=12,7,6,5,4\ldots`.
@@ -113,8 +114,8 @@ as well as for difference in performance. See [Albanese13]_.
 
 #. In order to speed up the computation of the MINE statistics, we
    introduced two improvements (with respect to the pseudo-code), in
-   OptimizeXAxis(), defined in Algorithm 2 in [Reshef11]_ SOM):
-   
+   OptimizeXAxis(), defined in Algorithm 2 in SOM):
+
       * Given a :math:`(P,Q)` grid, we precalculate the matrix of
         number of samples in each cell of the grid, to speed up the
         computation of entropy values :math:`H(Q)`, :math:`H(\langle
@@ -123,22 +124,7 @@ as well as for difference in performance. See [Albanese13]_.
 
       * We precalculate the entropy matrix :math:`H(\langle c_s,c_t
         \rangle, Q), \forall s, t` to speed up the computation of
-        :math:`F(s,t,l)` (see Algorithm 2, lines 10--17 in
-        [Reshef11]_ SOM).
+        :math:`F(s,t,l)` (see Algorithm 2, lines 10--17 in SOM).
 
    These improvements do not affect the final results of mutual
    information matrix and of MINE statistics.
-
-
-
-.. [Reshef11] David N. Reshef, Yakir A. Reshef, Hilary K. Finucane,
-   Sharon R. Grossman, Gilean McVean, Peter J. Turnbaugh, Eric
-   S. Lander, Michael Mitzenmacher, and Pardis C. Sabeti. Detecting
-   Novel Associations in Large Data Sets. Science 16 December 2011:
-   334 (6062), 1518-1524. [DOI:10.1126/science.1205438]
-.. [Albanese13] Davide Albanese, Michele Filosi, Roberto Visintainer, 
-   Samantha Riccadonna, Giuseppe Jurman and Cesare Furlanello. 
-   minerva and minepy: a C engine for the MINE suite and its R, Python 
-   and MATLAB wrappers. Bioinformatics (2013) 29(3): 407-408 first 
-   published online December 14, 2012 doi:10.1093/bioinformatics/bts707. 
-

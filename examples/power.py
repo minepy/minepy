@@ -15,7 +15,7 @@ mine_alpha = 0.6
 mine_c = 15
 
 f_names = ["Linear", "Quadratic", "Cubic", "Sine: period 1/2",
-          "Sine: period 1/8", "X^(1/4)", "Circle", "Step function"]
+           "Sine: period 1/8", "X^(1/4)", "Circle", "Step function"]
 
 def f1():
     return x + noise * (i/n_noise) * r
@@ -57,7 +57,7 @@ np.random.seed(0)
 for i in range(1, n_noise+1):
     for j, f in enumerate(ff):
         print "Noise: %d, function: %d" % (i, j)
-        
+
         mic_approx_null, mic_e_null, tic_e_null, r2_null = [], [], [], []
         mic_approx_alt, mic_e_alt, tic_e_alt, r2_alt = [], [], [], []
 
@@ -66,13 +66,13 @@ for i in range(1, n_noise+1):
             x = np.random.rand(n)
             r = np.random.randn(n)
             y = f()
-            
+
             # resimulate x for the null scenario
             x = np.random.rand(n)
 
             mine_approx.compute_score(x, y)
             mine_e.compute_score(x, y)
-            
+
             mic_approx_null.append(mine_approx.mic())
             mic_e_null.append(mine_e.mic())
             tic_e_null.append(mine_e.tic())
@@ -86,7 +86,7 @@ for i in range(1, n_noise+1):
 
             mine_approx.compute_score(x, y)
             mine_e.compute_score(x, y)
-            
+
             mic_approx_alt.append(mine_approx.mic())
             mic_e_alt.append(mine_e.mic())
             tic_e_alt.append(mine_e.tic())
@@ -96,12 +96,12 @@ for i in range(1, n_noise+1):
         cut_mic_e = np.percentile(mic_e_null, 95)
         cut_tic_e = np.percentile(tic_e_null, 95)
         cut_r2 = np.percentile(r2_null, 95)
-        
+
         mic_approx_power[j, i-1] = np.sum(np.array(mic_approx_alt) > cut_mic_approx) / n_alt
         mic_e_power[j, i-1] = np.sum(np.array(mic_e_alt) > cut_mic_e) / n_alt
         tic_e_power[j, i-1] = np.sum(np.array(tic_e_alt) > cut_tic_e) / n_alt
         r2_power[j, i-1] = np.sum(np.array(r2_alt) > cut_r2) / n_alt
-        
+
 fig = plt.figure(1, figsize=(14, 12))
 x_noise = np.linspace(noise/n_noise, noise, n_noise)
 for i in range(len(ff)):

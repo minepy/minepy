@@ -8,37 +8,39 @@ the header file ``cppmine.h``, located in the ``libmine/``
 folder. You need to add ``#include "cppmine.h"`` in your C++ source files
 and link your program with ``mine.c`` and ``cppmine.c``.
 
+
 .. cpp:class:: MINE
-   
-   .. cpp:function:: MINE::MINE(double alpha, double c)
-      
+
+   .. cpp:function:: MINE::MINE(double alpha, double c, int est)
+
       MINE constructor.
 
-      alpha is the exponent in :math:`B(n) = n^\alpha` and must be in 
-      :math:`(0,1]`, and c determines how many more clumps there will be 
-      than columns in every partition. c = 15 meaning that when trying 
-      to draw x grid lines on the x-axis, the algorithm will start with at 
-      most :math:`15 x` clumps. c must be > 0.
+      Alpha is the exponent in :math:`B(n) = n^\alpha` and must be in
+      :math:`(0,1]`, and c determines how many more clumps there will
+      be than columns in every partition. c = 15 meaning that when
+      trying to draw x grid lines on the x-axis, the algorithm will
+      start with at most :math:`15 x` clumps. c must be > 0. Est is
+      the estimator and can be EST_MIC_APPROX or EST_MIC_E.
 
       The constructor throws an exception when the parameters are
-      invalid.					
+      invalid.
 
    .. cpp:function:: MINE::~MINE()
- 
+
       MINE destructor.
 
    .. cpp:function:: void MINE::compute_score(double *x, double *y, int n)
 
       Computes the maximum normalized mutual information scores the between
-      variables `x` and `y` of length `n`. It rhrows an exception if an error
+      variables `x` and `y` of length `n`. It trhrows an exception if an error
       occurs.
-      
+
    .. cpp:function:: void MINE::mic()
 
       Returns the Maximal Information Coefficient (MIC).
 
    .. cpp:function:: void MINE::mas()
-   
+
       Returns the Maximum Asymmetry Score (MAS).
 
    .. cpp:function:: void MINE::mev()
@@ -46,14 +48,16 @@ and link your program with ``mine.c`` and ``cppmine.c``.
       Returns the Maximum Edge Value (MEV).
 
    .. cpp:function:: void MINE::mcn(double eps)
-    
+
       Returns the Minimum Cell Number (MCN) with :math:`\epsilon \geq 0`.
 
    .. cpp:function:: void MINE::mcn_general()
-    
-      Returns the Minimum Cell Number (MCN) with :math:`\epsilon=1 - \mathrm{MIC}`.
-   
 
+      Returns the Minimum Cell Number (MCN) with :math:`\epsilon=1 - \mathrm{MIC}`.
+
+   .. cpp:function:: void MINE::tic()
+
+      Returns the Total Information Coefficient (TIC).
 
 Example
 -------
@@ -75,12 +79,12 @@ Run the example by typing:
 
 .. code-block:: sh
 
-   $ ./a.out
-   MIC: 0.999999
-   MAS: 0.728144
-   MEV: 0.999999
-   MCN (eps=0): 4.58496
-   MCN (eps=1-MIC): 4.58496
+    $ ./a.out
+    MIC: 0.999999
+    MAS: 0.728144
+    MEV: 0.999999
+    MCN (eps=0): 4.58496
+    MCN (eps=1-MIC): 4.58496
 
 A more simple example
 ---------------------
@@ -102,6 +106,5 @@ Run the example by typing:
 
 .. code-block:: sh
 
-   $ ./a.out
-   MIC: 0.291692
-
+    $ ./a.out
+    MIC: 0.291692
