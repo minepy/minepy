@@ -6,3 +6,12 @@ python:
 - "3.5"
 install: pip install .
 script: python tests/minepy_test.py
+deploy:
+  provider: pypi
+  user: davidealbanese
+  password:
+    secure: nRbGUlQIHl+Nz9DTqEUdJGkzFCxm0U0n4Z4OKamPMX6jdKkzCznDn8PLQkqfgXLFkaUPp44ta3uormcxQVs6AEwRnKoM5hFO5QSfz2163q9YCl0VeCTteycM272s9i7QNY19e6/FsGby+coDjZiDh3dKLNesyuem4GEv3E8y85PoOkfTNwzr0IEHDhs4ISmyODftbb868kTrkTUWmfR1X5cRnk8UQNJ93WIIMnmdp7fo7Z1bIvMBTAbrSIDI3hT4fsbJkBZZVvEG+DxX2cwCLGHSj2lsf6aiy5GJWNAfMjgu9pQKELcXUQ/7HKghJZ4xWVIrWsuolYfbajy4pbgdrfrj0PLW2uwIYn8cXAQUehPoQoQq0tAYrajB92aOSv5/qGrZ2Ue84R7T5qgMTYMyX4OBD8P68x8sRH90XmZUr9M2FvsJ43yolg7CH0aIWEMZG4alx1zwgsI4v03YTERr6LeLZLdW3MTgeTpitqsryb3hinCeOAIkHpI/bHbNSZnb/JjGTO2DgLzdbACw7WwuvJucrm8YrsBl/RYSl/YbmBgkAtunlxUbqP2Ge+hbCGDE3FStofeikNxnFjTSA6J3z03KSskIxXYqLY/C6WgDVy5hCWsdVvPCGRyvA9xi9kpXaHtag3XH86Yx+JWutAngCTHWBr4nLsdLqALSqbmn5Fs=
+  on:
+    tags: true
+    distributions: sdist bdist_wheel
+    repo: minepy/minepy
