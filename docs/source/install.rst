@@ -55,6 +55,7 @@ In Mac OS X, we recommend to install Python from `Homebrew <http://brew.sh/>`_:
       ``~/.bash_profile`` or ``~/.bashrc``::
 
       .. code-block:: sh
+
          export PATH=/usr/local/bin:$PATH
 
    #. Install Python:

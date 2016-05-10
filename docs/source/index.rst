@@ -6,18 +6,34 @@
 
 .. include:: ../../README.rst
 
+.. image:: images/relationships.png
+   :align: center
+
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents
+   :caption: Quick start
 
    install
+   application
+
+
+.. toctree::
+   :maxdepth: 2
+   :caption: API
+
    libmine
    cpp
    python
    matlab
-   application
+
+
+.. toctree::
+   :maxdepth: 2
+   :caption: In depth
+
    details
+
 
 Indices and tables
 ==================
