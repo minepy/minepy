@@ -33,7 +33,7 @@ Documentation
 -------------
 * `Latest (github snapshot) <http://minepy.readthedocs.io/en/latest>`_
 * `1.1 (latest stable) <http://minepy.readthedocs.io/en/stable>`_
-* `1.0 <http://minepy.readthedocs.io/en/v1.0.0>`_
+* `1.0 <http://minepy.sourceforge.net/docs/1.0.0/>`_
 
 Citing minepy
 -------------
