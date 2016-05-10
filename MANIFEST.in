@@ -9,7 +9,7 @@ recursive-include minepy *.pyx
 recursive-include matlab *.c
 recursive-include matlab *.m
 recursive-include examples *.c *.cpp *.m *.py
-recursive-include test *.py
+include tests/*.py
 include docs/Makefile
 include docs/source/*.py
 include docs/source/*.txt
