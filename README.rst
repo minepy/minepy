@@ -4,6 +4,10 @@ minepy - Maximal Information-based Nonparametric Exploration
 .. image:: https://travis-ci.org/minepy/minepy.png?branch=master
   :target: https://travis-ci.org/minepy/minepy
 
+.. image:: https://readthedocs.org/projects/minepy/badge/?version=latest
+  :target: http://minepy.readthedocs.io/en/latest/?badge=latest
+  :alt: Documentation Status
+
 minepy provides an **ANSI C library** for the Maximal Information-based
 Nonparametric Exploration (**MIC** and **MINE family**). Key features:
 
