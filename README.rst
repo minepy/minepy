@@ -1,25 +1,33 @@
 minepy - Maximal Information-based Nonparametric Exploration
-------------------------------------------------------------
+============================================================
 
-|Travis|_
+.. image:: https://travis-ci.org/minepy/minepy.png?branch=master
+  :target: https://travis-ci.org/minepy/minepy
 
-.. |Travis| image:: https://travis-ci.org/minepy/minepy.png?branch=master
-.. _Travis: https://travis-ci.org/minepy/minepy
+minepy provides an ANSI C library for the Maximal Information-based
+Nonparametric Exploration (MIC and MINE family). Key features:
 
-minepy provides an ANSI C library (with C++, Python and MATLAB/OCTAVE
-wrappers) for Maximal Information-based Nonparametric Exploration (MIC
-and MINE family).
+  * APPROX-MIC (the original algorithm, DOI: 10.1126/science.1205438) and
+    :math:`MIC_e` (DOI: arXiv:1505.02213 and DOI: arXiv:1505.02214) estimators;
+  * the Total Information Coefficient (TIC, DOI: arXiv:1505.02213) and
+    the Generalized Mean Information Coefficient (GMIC, DOI: arXiv:1308.5712);
+  * a C++ interface;
+  * an efficient Python API;
+  * an efficient MATLAB/OCTAVE API;
+  * a command-line application similar to the original ``MINE.jar``.
 
-minepy is multiplatform (Linux, Mac OS X and Windows), it works with
-Python 2 and 3 and it is Open Source, distributed under the GNU
-General Public License version 3.
+minepy is is an open-source, GPLv3-licensed software.
 
-If you use minepy, please cite::
+* `Homepage <>`_
+* `Documentation (latest) <>`_
+* `Issues <>`_
+* `Github page <>`_
 
-  Davide Albanese, Michele Filosi, Roberto Visintainer, Samantha
-  Riccadonna, Giuseppe Jurman and Cesare Furlanello. minerva and
-  minepy: a C engine for the MINE suite and its R, Python and MATLAB
-  wrappers.  Bioinformatics (2013) 29(3): 407-408 first published
-  online December 14, 2012 doi:10.1093/bioinformatics/bts707.
+Citing minepy
+-------------
 
-Homepage: http://minepy.sourceforge.net/
+Davide Albanese, Michele Filosi, Roberto Visintainer, Samantha Riccadonna,
+Giuseppe Jurman and Cesare Furlanello. minerva and minepy: a C engine for the
+MINE suite and its R, Python and MATLAB wrappers.  Bioinformatics (2013)
+29(3): 407-408 first published online December 14, 2012
+doi:10.1093/bioinformatics/bts707.

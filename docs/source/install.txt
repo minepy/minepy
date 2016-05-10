@@ -1,5 +1,5 @@
-Install
-=======
+Download and Install
+====================
 
 Download
 --------
@@ -7,8 +7,8 @@ Download latest version from  http://sourceforge.net/projects/minepy/files/.
 
 C and C++ users
 ---------------
-No installation is required. See :ref:`c_api` and :ref:`cpp_api` on
-how to include the library in your C/C++ sofware and how to compile on a UNIX machine.
+No installation is required. See :ref:`c_api` and :ref:`cpp_api` on how to
+include the library in your C/C++ software and how to compile.
 
 Python users - Installing on \*nix from source
 ----------------------------------------------
@@ -42,7 +42,7 @@ On GNU/Linux, OSX and FreeBSD you need the following requirements:
       $ python setup.py install --prefix=/path/to/modules
       $ export PYTHONPATH=$PYTHONPATH:/path/to/modules/lib/python{version}/site-packages
 
-4. Running the tests: 
+4. Running the tests:
 
    .. code-block:: sh
 
@@ -52,23 +52,12 @@ On GNU/Linux, OSX and FreeBSD you need the following requirements:
       test_exp (__main__.TestFunctions) ... ok
       test_linear (__main__.TestFunctions) ... ok
       test_sine (__main__.TestFunctions) ... ok
-      
+
       ----------------------------------------------------------------------
       Ran 4 tests in 0.412s
 
       OK
 
-Python users - Installing on MS Windows
----------------------------------------
-On MS Windows (Xp, Vista and 7) you need the following requirements:
-   
-   * Python 2.7 32 bit
-   * NumPy >= 1.6 for Python 2.7
-   
-1. Download ``minepy-X.Y.Z.win32-py2.7.exe`` (where ``X.Y.Z`` is the current
-   version of minepy)
-
-2. Install ``minepy-X.Y.Z.win32-py2.7.exe``
 
 MATLAB users (Windows, Linux and Mac OS X)
 ------------------------------------------
@@ -106,14 +95,14 @@ See http://www.mathworks.com/help/matlab/matlab_external/upgrading-mex-files-to-
 
       >> minestats = mine([1,2,3,4,5,6], [1,2,3,4,5,6])
 
-      minestats = 
+      minestats =
 
     	  mic: 1
     	  mas: 0
           mev: 1
           mcn: 2
 	  mcn_general: 2
-      
+
 OCTAVE users (Windows, Linux and Mac OS X)
 ------------------------------------------
 1. Untar ``minepy-X.Y.Z.tar.gz``, creating ``minepy-X.Y.Z`` folder
@@ -154,4 +143,3 @@ OCTAVE users (Windows, Linux and Mac OS X)
       mcn =  2
       mcn_general =  2
       }
-

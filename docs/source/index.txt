@@ -3,36 +3,21 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to minepy's documentation!
-==================================
 
-minepy provides an ANSI C library (with C++, Python and MATLAB/OCTAVE
-wrappers) for Maximal Information-based Nonparametric Exploration (MIC
-and MINE family). minepy contains:
+.. include:: ../../README.rst
 
-  * APPROX-MIC and :math:`MIC_e` estimators,
-  * an **ANSI C** core API (``libmine``),
-  * a C++ interface,
-  * an efficient Python API,
-  * an efficient MATLAB/OCTAVE API,
-  * a command-line application similar to the original ``MINE.jar``.
-
-minepy is multiplatform (Linux, Mac OS X and Windows Xp, Vista and 7),
-it works with Python 2 and 3 and it is Open Source, distributed under
-the GNU General Public License version 3.
-
-Contents:
 
 .. toctree::
    :maxdepth: 2
+   :caption: Contents
 
-   details
    install
    libmine
    cpp
    python
    matlab
    application
+   details
 
 Indices and tables
 ==================

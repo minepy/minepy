@@ -5,7 +5,25 @@ import itertools
 import csv
 from optparse import OptionParser
 import numpy as np
-from minepy import MINE, pearson, __version__
+from minepy import MINE, __version__
+
+
+def pearson(x, y):
+    """Returns the Pearson correlation between x and y.
+    """
+
+    xa = np.asarray(x, dtype=np.float)
+    ya = np.asarray(y, dtype=np.float)
+    if xa.shape[0] != ya.shape[0]:
+        raise ValueError("x, y: shape mismatch")
+
+    xc = xa - np.mean(xa)
+    yc = ya - np.mean(ya)
+    a = np.sum(xc*yc)
+    b = np.sqrt(np.sum(xc**2))
+    c = np.sqrt(np.sum(yc**2))
+
+    return a / (b * c)
 
 
 def compute_stats(data, varname, idx1, idx2, mine, writer):

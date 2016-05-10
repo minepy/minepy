@@ -7,9 +7,9 @@ class MINE {
 
   private:
 
-    mine_parameter param; /* defined in "mine.h" */
-    mine_problem prob; /* defined in "mine.h" */
-    mine_score *score; /* defined in "mine.h" */
+    mine_parameter param;
+    mine_problem prob;
+    mine_score *score;
 
   public:
 
@@ -19,30 +19,28 @@ class MINE {
     /* Destructor. */
     ~MINE();
 
-    /* Computes the maximum normalized mutual information scores
-     * the between variables x and y of length n.
-     */
+    /* See mine.h */
     void compute_score(double *x, double *y, int n);
 
-    /* Returns the Maximal Information Coefficient (MIC). */
+    /* See mine.h */
     double mic();
 
-    /* Returns the Maximum Asymmetry Score (MAS). */
+    /* See mine.h */
     double mas();
 
-    /* Returns the Maximum Edge Value (MEV). */
+    /* See mine.h */
     double mev();
 
-    /* Returns the Minimum Cell Number (MCN), with eps >= 0. */
+    /* See mine.h */
     double mcn(double eps);
 
-    /* Returns the Minimum Cell Number (MCN) with eps = 1 - MIC. */
+    /* See mine.h */
     double mcn_general();
 
-    /* Returns the e Generalized Mean Information Coefficient (GMIC) */
+    /* See mine.h */
     double gmic(double p);
 
-    /* Returns the Total Information Coefficient (TIC). */
+    /* See mine.h */
     double tic();
 };
 

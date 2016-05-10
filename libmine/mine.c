@@ -1,38 +1,31 @@
 /*
-    libmine core library
-
-    This code is written by Davide Albanese <davide.albanese@gmail.com>
-    and Michele Filosi <filosi@fbk.eu>.
-    Copyright (C) 2012 Davide Albanese, Copyright (C) 2012 Michele
-    Filosi, Copyright (C) 2012 Fondazione Bruno Kessler.
-
-    References:
-    a) D. Reshef, Y. Reshef, H. Finucane, S. Grossman, G. McVean,
-       P. Turnbaugh, E. Lander, M. Mitzenmacher, P. Sabeti.
-       Detecting novel associations in large datasets.
-       Science 334, 6062 (2011)
-    b) D. Albanese, M. Filosi, R. Visintainer, S. Riccadonna, G. Jurman,
-       C. Furlanello.
-       minerva and minepy: a C engine for the MINE suite and its R,
-       Python and MATLAB wrappers.
-       Bioinformatics first published online December 14, 2012
-       doi:10.1093/bioinformatics/bts707.
-       http://bioinformatics.oxfordjournals.org/content/early/
-       2013/01/06/bioinformatics.bts707
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program. If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Libmine core library.
+ *
+ * This code is written by Davide Albanese <davide.albanese@gmail.com>
+ * and Michele Filosi <filosi@fbk.eu>.
+ *
+ * Copyright (C) 2012-2016 Davide Albanese, Copyright (C) 2012 Michele
+ * Filosi, Copyright (C) 2012 Fondazione Bruno Kessler.
+ *
+ * References:
+ *   * Original MINE paper: DOI: 10.1126/science.1205438;
+ *   * Minepy paper: DOI: 10.1093/bioinformatics/bts707D;
+ *   * MIC_e and TIC: DOI: arXiv:1505.02213 and DOI: arXiv:1505.02214;
+ *   * GMIC: DOI: arXiv:1308.5712.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -118,7 +111,8 @@ int *argsort(double *a, int n)
 }
 
 
-/* Returns the entropy induced by the points on the partition Q.
+/*
+ * Returns the entropy induced by the points on the partition Q.
  * See section 3.2.1, page 10, SOM.
  *
  * Parameters
@@ -146,8 +140,8 @@ double hq(int **cumhist, int q, int p, int n)
   return H;
 }
 
-
-/* Returns the entropy induced by the points on the partition
+/*
+ * Returns the entropy induced by the points on the partition
  * <c_0, c_s, c_t>. See line 5 of Algorithm 2, SOM.
  *
  * Parameters
@@ -182,8 +176,8 @@ double hp3(int *c, int s, int t)
   return H;
 }
 
-
-/* Returns the entropy induced by the points on the partition
+/*
+ * Returns the entropy induced by the points on the partition
  * <c_0, c_s, c_t>, Q. See line 5 of Algorithm 2 in SOM.
  *
  * Parameters
@@ -220,8 +214,8 @@ double hp3q(int **cumhist, int *c, int q, int p, int s, int t)
   return H;
 }
 
-
-/* Returns the entropy induced by the points on the partition <c_s, c_t>
+/*
+ * Returns the entropy induced by the points on the partition <c_s, c_t>
  * and Q. See line 13 of Algorithm 2, SOM.
  *
  * Parameters
@@ -258,8 +252,8 @@ double hp2q(int **cumhist, int *c, int q, int p, int s, int t)
   return H;
 }
 
-
-/* Returns the map Q: D -> {0, ...,q-1}.
+/*
+ * Returns the map Q: D -> {0, ...,q-1}.
  * See Algorithm 3 in SOM.
  *
  * Parameters
@@ -318,8 +312,8 @@ int EquipartitionYAxis(double *dy, int n, int y, int *Q_map, int *q)
   return 0;
 }
 
-
-/* Returns the map P: D -> {0, ...,p-1}.
+/*
+ * Returns the map P: D -> {0, ...,p-1}.
  *
  * Parameters
  *   dx (IN) : x-data sorted in increasing order
@@ -388,8 +382,8 @@ int GetClumpsPartition(double *dx, int n, int *Q_map, int *P_map, int *p)
   return 0;
 }
 
-
-/* Returns the map P: D -> {0, ...,p-1}.
+/*
+ * Returns the map P: D -> {0, ...,p-1}.
  *
  * Parameters
  *   dx (IN) : x-data sorted in increasing order
@@ -556,8 +550,8 @@ double **compute_HP2Q(int **cumhist, int*c, int q, int p)
   return HP2Q;
 }
 
-
-/* Returns the normalized MI scores.
+/*
+ * Returns the normalized MI scores.
  *
  * Parameters
  *   dx (IN) : x-data sorted in increasing order by dx-values
@@ -616,10 +610,7 @@ int OptimizeXAxis(double *dx, double *dy, int n, int *Q_map, int q,
   /* compute H(Q) */
   HQ = hq(cumhist, q, p, n);
 
-  /*
-   * Find the optimal partitions of size 2
-   * Algorithm 2 in SOM, lines 3-8
-   */
+  /* Find the optimal partitions of size 2, Algorithm 2 in SOM, lines 3-8 */
   for (t=2; t<=p; t++)
     {
       F_max = -DBL_MAX;
@@ -635,8 +626,7 @@ int OptimizeXAxis(double *dx, double *dy, int n, int *Q_map, int q,
     }
 
   /*
-   * Inductively build the rest of the table of
-   * optimal partitions
+   * Inductively build the rest of the table of optimal partitions,
    * Algorithm 2 in SOM, lines 10-17
    */
   for (l=3; l<=x; l++)
@@ -701,8 +691,9 @@ int OptimizeXAxis(double *dx, double *dy, int n, int *Q_map, int q,
 }
 
 
-/* Returns an initialized mine_score structure.
- * Returns NULL if an error occurs.
+/*
+ * Returns an initialized mine_score structure. Returns NULL if an error
+ * occurs.
  */
 mine_score *init_score(mine_problem *prob, mine_parameter *param)
 {
@@ -752,10 +743,8 @@ mine_score *init_score(mine_problem *prob, mine_parameter *param)
     return NULL;
 }
 
-/* Computes the maximum normalized mutual information scores and
- * returns a mine_score structure. Returns NULL if an error occurs.
- * Algorithm 5, page 14, SOM
- */
+
+/* See mine.h */
 mine_score *mine_compute_score(mine_problem *prob, mine_parameter *param)
 {
   int i, j, k, p, q, ret;
@@ -927,11 +916,7 @@ mine_score *mine_compute_score(mine_problem *prob, mine_parameter *param)
 }
 
 
-/* This function checks the parameters. It should be called
- * before calling mine_compute_score(). It returns NULL if
- * the parameters are feasible, otherwise an error message
- * is returned.
- */
+/* See mine.h */
 char *mine_check_parameter(mine_parameter *param)
 {
   if ((param->alpha <= 0.0) || (param->alpha > 1.0))
@@ -947,7 +932,7 @@ char *mine_check_parameter(mine_parameter *param)
 }
 
 
-/* Returns the Maximal Information Coefficient (MIC). */
+/* See mine.h */
 double mine_mic(mine_score *score)
 {
   int i, j;
@@ -962,7 +947,7 @@ double mine_mic(mine_score *score)
 }
 
 
-/* Returns the Maximum Asymmetry Score (MAS). */
+/* See mine.h */
 double mine_mas(mine_score *score)
 {
   int i, j;
@@ -981,7 +966,7 @@ double mine_mas(mine_score *score)
 }
 
 
-/* Returns the Maximum Edge Value (MEV). */
+/* See mine.h */
 double mine_mev(mine_score *score)
 {
   int i, j;
@@ -996,7 +981,7 @@ double mine_mev(mine_score *score)
 }
 
 
-/* Returns the Minimum Cell Number (MCN) with eps >= 0. */
+/* See mine.h */
 double mine_mcn(mine_score *score, double eps)
 {
   int i, j;
@@ -1018,7 +1003,7 @@ double mine_mcn(mine_score *score, double eps)
 }
 
 
-/* Returns the Minimum Cell Number (MCN) with eps = 1 - MIC. */
+/* See mine.h */
 double mine_mcn_general(mine_score *score)
 {
   int i, j;
@@ -1039,7 +1024,7 @@ double mine_mcn_general(mine_score *score)
 }
 
 
-/* Returns the e Generalized Mean Information Coefficient (GMIC) */
+/* See mine.h */
 double mine_gmic(mine_score *score, double p)
 {
   int i, j, k, Z, B;
@@ -1120,7 +1105,7 @@ double mine_gmic(mine_score *score, double p)
 }
 
 
-/* Returns the Total Information Coefficient (TIC). */
+/* See mine.h */
 double mine_tic(mine_score *score)
 {
   int i, j;
@@ -1134,9 +1119,7 @@ double mine_tic(mine_score *score)
 }
 
 
-/* This function frees the memory used by the
- * mine_score structure.
- */
+/* See mine.h */
 void mine_free_score(mine_score **score)
 {
   int i;

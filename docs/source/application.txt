@@ -1,12 +1,11 @@
 MINE Application
 ================
 
-The mine application is a script (installed together the minepy
-library) which computes the MINE statistics on a comma-separated
-values (CSV) file. The first column of the file must contain the
-variable names and each variable must have the same number of
-samples. The file must be in the form::
-   
+The mine application is a script (installed together the minepy library) which
+computes the MINE statistics on a comma-separated values (CSV) file. The first
+column of the file must contain the variable names and each variable must have
+the same number of samples. The file must be in the form::
+
    var1_name,1,2.5,3,4,5,6,7,8,9,10
    var2_name,8,7,6,5,6,6,6,1.23,4,4
    var3_name,1,7,3,5,6,6,6,3,4,4.2
@@ -21,8 +20,8 @@ The input file can contain missing values (new in minepy 1.1.0)::
    var4_name,...
    ...
 
-Only the samples without missing values are used to compute 
-the MINE statistics. For instance, var2_name vs. var3_name::
+Only the samples without missing values are used to compute the MINE statistics.
+For instance, var2_name vs. var3_name::
 
    {8,7, ,5,6,6,6,1.23,4,4  } -> {8,7,6,6,1.23,4,4  }
    {1,7,3, , ,6,6,3   ,4,4.2} -> {1,7,6,6,3   ,4,4.2}
@@ -31,7 +30,7 @@ Usage::
 
     Usage: mine infile [-a <alpha>] [-c <c>] [-o <file>] [-m <var index>] [-p <var1 index> <var2 index>]
 
-    MINE Python v. 1.0.0 [Homepage: minepy.sf.net]. The mine script
+    MINE Python v. 1.1.0 [Homepage: minepy.sf.net]. The mine script
     compares by default all pairs of variables against each other. It
     writes an output file where each column contains MIC (strength),
     MIC-r^2 (nonlinearity), MAS (non- monotonicity), MEV (functionality),
@@ -63,7 +62,6 @@ Usage::
 Examples
 --------
 
-
 Spellman Gene Expression dataset
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Compute the MINE statistics for variable #1 (time) vs. all the other
@@ -72,9 +70,9 @@ variables, with alpha=0.67 and c=15.
   1. Download the `Spellman
      <http://sourceforge.net/projects/minepy/files/data/Spellman.csv/download>`_
      dataset
-  
+
   2. From a terminal, run::
-  
+
 	$ mine Spellman.csv -a 0.67 -c 15 -m 1 -o Spellman_MINE.txt
 
 Dataset details are in http://www.exploredata.net/Downloads
@@ -89,7 +87,7 @@ with alpha=0.7 and c=15.
      dataset
 
   2. From a terminal, run::
-  
+
 	$ mine MLB2008.csv -a 0.7 -c 15 -o MLB2008_MINE.txt
 
 Dataset details are in http://www.exploredata.net/Downloads
@@ -104,7 +102,7 @@ with alpha=0.551 and c=10.
      dataset
 
   2. From a terminal, run::
-  
+
 	$ mine Microbiome.csv -a 0.551 -c 10 -o Microbiome_MINE.txt
 
 Dataset details are in http://www.exploredata.net/Downloads

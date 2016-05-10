@@ -3,12 +3,17 @@ CHANGES
 
 1.1.0
 -----
-* Matlab API: MIC_e and TIC estimators added (thanks to Robin Ince - robince)
-* libmine, C++, and Python API: MIC_e and TIC estimators added
-* libmine, C++, and Python API: Generalized Mean Information Coefficient (GMIC) added
+* minestats() and pearson() functions removed from the Python module
+* get_alpha() and get_c() methods removed from the Python MINE class
+* Matlab API: MIC_e estimator added (thanks to Robin Ince - robince)
+* Matlab API: TIC statistic added (thanks to Robin Ince - robince)
+* libmine (C), C++, and Python API: MIC_e and TIC estimators added
+* libmine (C), C++, and Python API: TIC statistic added
+* libmine (C), C++, and Python API: Generalized Mean Information Coefficient
+  (GMIC) added
 * Python API: nogil added to computationally intensive parts (thanks to Adrin
   Jalali - adrinjalali)
-* Indentations adjusted
+* Documentation improved
 
 1.0.0
 -----

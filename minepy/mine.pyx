@@ -1,6 +1,8 @@
-## This code is written by Davide Albanese, <albanese@fbk.eu>
+## minepy python module
+
+## This code is written by Davide Albanese, <davide.albanese@gmail.com>
+## Copyright (C) 2012-2016 Davide Albanese
 ## Copyright (C) 2012 Fondazione Bruno Kessler
-## Copyright (C) 2012 Davide Albanese
 
 ## This program is free software: you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -15,7 +17,9 @@
 ## You should have received a copy of the GNU General Public License
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+
 from __future__ import division
+
 import numpy as np
 cimport numpy as np
 from libc.stdlib cimport *
@@ -73,16 +77,20 @@ cdef class MINE:
 
     def __cinit__(self, alpha=0.6, c=15, est="mic_approx"):
         """
-        :Parameters:
-            alpha : float (0, 1.0]
-                the exponent in B(n) = n^alpha
-            c : float (> 0)
-                determines how many more clumps there will be than
-                columns in every partition. Default value is 15, meaning
-                that when trying to draw x grid lines on the x-axis,
-                the algorithm will start with at most 15*x clumps
-            est : str ("mic_approx", "mic_e")
-                specifies the estimator used to obtain the MIC values.
+        Parameters
+        ----------
+        alpha : float (0, 1.0]
+            the exponent in B(n) = n^alpha.
+        c : float (> 0)
+            determines how many more clumps there will be than columns in
+            every partition. Default value is 15, meaning that when trying to
+            draw x grid lines on the x-axis, the algorithm will start with at
+            most 15*x clumps.
+        est : str ("mic_approx", "mic_e")
+            estimator. With est="mic_approx" the original MINE statistics will
+            be computed, with est="mic_e" the equicharacteristic matrix is
+            is evaluated and the mic() and tic() methods will return MIC_e and
+            TIC_e values respectively.
         """
 
         self.param.c = <double> c
@@ -125,7 +133,7 @@ cdef class MINE:
         self._free_score()
 
     def mic(self):
-        """Returns the Maximal Information Coefficient (MIC).
+        """Returns the Maximal Information Coefficient (MIC or MIC_e).
         """
 
         if self.score is NULL:
@@ -170,7 +178,7 @@ cdef class MINE:
         return mine_mcn_general(self.score)
 
     def gmic(self, p=-1):
-        """Returns the Generalized Maximal Information Coefficient (GMIC)
+        """Returns the Generalized Maximal Information Coefficient (GMIC).
         """
 
         if self.score is NULL:
@@ -179,7 +187,7 @@ cdef class MINE:
         return mine_gmic(self.score, p)
 
     def tic(self):
-        """Returns the Total Information Coefficient (TIC)
+        """Returns the Total Information Coefficient (TIC or TIC_e).
         """
 
         if self.score is NULL:
@@ -189,10 +197,10 @@ cdef class MINE:
 
     @cython.boundscheck(True)
     def get_score(self):
-        """Returns the maximum normalized mutual information scores, M.
-
-        M is a list of 1d numpy arrays where M[i][j] contains the score
-        using a grid partitioning x-values into i+2 bins and y-values
+        """Returns the maximum normalized mutual information scores M (i.e. the
+        characteristic matrix if est="mic_approx", the equicharacteristic matrix
+        instead). M is a list of 1d numpy arrays where M[i][j] contains the
+        score using a grid partitioning x-values into i+2 bins and y-values
         into j+2 bins.
         """
 
@@ -211,19 +219,11 @@ cdef class MINE:
         return M
 
     def computed(self):
-        """Return True if the score is computed."""
+        """Return True if the scores ((equi)characteristic matrix) are
+        computed.
+        """
 
         if self.score is NULL:
             return False
         else:
             return True
-
-    def get_alpha( self):
-        """Returns alpha."""
-
-        return self.param.alpha
-
-    def get_c(self):
-        """Returns c."""
-
-        return self.param.c

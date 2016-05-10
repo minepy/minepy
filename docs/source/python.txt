@@ -8,14 +8,19 @@ Python API
 	Maximal Information-based Nonparametric Exploration.
 
 	:Parameters:
+
 		alpha : float (0, 1.0]
-			the exponent in B(n) = n^alpha.
+				the exponent in B(n) = n^alpha.
 		c : float (> 0)
-			determines how many more clumps there will be than columns in every
-			partition. Default value is 15, meaning that when trying to draw x grid
-			lines on the x-axis, the algorithm will start with at most 15*x clumps.
+				determines how many more clumps there will be than columns in
+				every partition. Default value is 15, meaning that when trying to
+				draw x grid lines on the x-axis, the algorithm will start with at
+				most 15*x clumps.
 		est : str ("mic_approx", "mic_e")
-			specifies the estimator.
+				estimator. With est="mic_approx" the original MINE statistics will
+				be computed, with est="mic_e" the equicharacteristic matrix is
+				is evaluated and the mic() and tic() methods will return MIC_e and
+				TIC_e values respectively.
 
   .. automethod:: compute_score(x, y)
   .. automethod:: mic()
@@ -26,8 +31,6 @@ Python API
   .. automethod:: gmic()
   .. automethod:: tic()
   .. automethod:: get_score()
-  .. automethod:: get_alpha()
-  .. automethod:: get_c()
   .. automethod:: computed()
 
 First Example
@@ -72,10 +75,3 @@ The example is located in ``examples/relationships.py``.
 
 .. figure:: images/relationships.png
     :align: center
-
-Convenience functions
----------------------
-
-		.. autofunction:: minestats
-
-   	.. autofunction:: pearson

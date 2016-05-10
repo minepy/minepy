@@ -1,6 +1,6 @@
-/*  
+/*
     This code is written by Davide Albanese <davide.albanese@gmail.com>.
-    (C) 2012 Fondazione Bruno Kessler, (C) 2012 Davide Albanese.
+    (C) 2012-2016 Davide Albanese, (C) 2012 Fondazione Bruno Kessler.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,8 +19,8 @@
 #include "mex.h"
 #include "../libmine/mine.h"
 
-
-/* The gateway function
+/*
+ * The gateway function
  *  [A, M] = MINE_MEX(X, Y, ALPHA, C, EST)
  *  A = [MIC, MAS, MEV, MCN, MCN_GENERAL, TIC]
  *  M (optional) = characteristic matrix (square dense matrix)
@@ -31,16 +31,16 @@ void mexFunction(int nlhs, mxArray *plhs[],
   double *x, *y;
   double alpha;
   int c, est;
-  
+
   mwSize ncolsx, ncolsy;
-  
+
   mine_problem problem;
   mine_parameter param;
   mine_score *score;
   char *ret;
   double *out;
 
-  
+
   /* check for proper number of outputs */
   if(nlhs > 2)
     mexErrMsgTxt("Too many output arguments.");
@@ -48,23 +48,23 @@ void mexFunction(int nlhs, mxArray *plhs[],
   /* check for proper number of arguments */
   if(nrhs != 5)
     mexErrMsgTxt("Incorrect number of inputs.");
-   
+
   /* check that number of rows in first input argument (x) is 1 */
   if(mxGetM(prhs[0]) != 1)
     mexErrMsgTxt("X must be a row vector.");
-  
+
   /* check that number of rows in second input argument (y) is 1 */
   if(mxGetM(prhs[1]) != 1)
     mexErrMsgTxt("Y must be a row vector.");
-  
+
   /* make sure the thirth input argument (alpha) is scalar */
   if(!mxIsDouble(prhs[2]) || mxIsComplex(prhs[2]) ||
-     mxGetNumberOfElements(prhs[2]) != 1) 
+     mxGetNumberOfElements(prhs[2]) != 1)
     mexErrMsgTxt("alpha must be a scalar.");
-  
+
   /* make sure the fourth input argument (c) is scalar */
   if(!mxIsDouble(prhs[3]) || mxIsComplex(prhs[3]) ||
-     mxGetNumberOfElements(prhs[3]) != 1) 
+     mxGetNumberOfElements(prhs[3]) != 1)
     mexErrMsgTxt("c must be a scalar.");
 
   /* make sure the fifth input argument (est) is scalar */
@@ -76,7 +76,7 @@ void mexFunction(int nlhs, mxArray *plhs[],
   alpha = mxGetScalar(prhs[2]);
   c = mxGetScalar(prhs[3]);
   est = (int) mxGetScalar(prhs[4]);
-  
+
   /* create a pointers for X and Y */
   x = mxGetPr(prhs[0]);
   y = mxGetPr(prhs[1]);
@@ -85,8 +85,8 @@ void mexFunction(int nlhs, mxArray *plhs[],
 
   /* check the number of elements of X and Y */
   if (ncolsx != ncolsy)
-    mexErrMsgTxt("X and Y must have the same number of elements.");      
-  
+    mexErrMsgTxt("X and Y must have the same number of elements.");
+
   /* build param */
   param.alpha = alpha;
   param.c = c;
@@ -96,12 +96,12 @@ void mexFunction(int nlhs, mxArray *plhs[],
   ret = mine_check_parameter(&param);
   if(ret)
     mexErrMsgTxt(ret);
-  
+
   /* build problem */
   problem.n = (int) ncolsx;
   problem.x = x;
   problem.y = y;
-  
+
   /* compute the mutual information score */
   score = mine_compute_score(&problem, &param);
   if(score == NULL)
