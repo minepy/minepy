@@ -18,10 +18,11 @@ Nonparametric Exploration (MIC and MINE family). Key features:
 
 minepy is is an open-source, GPLv3-licensed software.
 
-* `Homepage <>`_
-* `Documentation (latest) <>`_
-* `Issues <>`_
-* `Github page <>`_
+* `Homepage <http://minepy.readthedocs.io>`_
+* `Download <https://github.com/minepy/minepy/releases>`_
+* `Documentation (latest) <http://minepy.readthedocs.io>`_
+* `Github page <https://github.com/minepy/minepy>`_
+* `Issues <https://github.com/minepy/minepy/issues>`_
 
 Citing minepy
 -------------
