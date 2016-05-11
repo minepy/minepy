@@ -32,7 +32,7 @@ minepy is an open-source, GPLv3-licensed software.
 Documentation
 -------------
 * `Latest (github snapshot) <http://minepy.readthedocs.io/en/latest>`_
-* `1.1 (latest stable) <http://minepy.readthedocs.io/en/stable>`_
+* `1.1 (stable, 16/05/10) <http://minepy.readthedocs.io/en/v1.1.0>`_
 * `1.0 <http://minepy.sourceforge.net/docs/1.0.0/>`_
 
 Citing minepy

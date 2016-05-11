@@ -38,7 +38,7 @@ Then, upgrade pip and install setuptools:
     pip install --upgrade pip
     pip install 'setuptools >=14.0'
 
-Finally, install micca:
+Finally, install minepy:
 
 .. code-block:: sh
 
