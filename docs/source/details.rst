@@ -49,7 +49,7 @@ numerical discrepancies as well as for difference in performance
    can lead to underestimate the normalized mutual information matrix
    :math:`M_{x,y}` (SOM, Algorithm 5, line 9), where :math:`M_{x,y}` is obtained
    by dividing the mutual information :math:`I_{x,y}` for
-   :math:`\min\{\log x,\log #y\}`. To prevent this issue, we normalize instead
+   :math:`\min\{\log x,\log y\}`. To prevent this issue, we normalize instead
    by the factor :math:`\min\{\log x,\log \hat{y}\}`.
 
 #. The function GetClumpsPartition(:math:`D,Q`) is discussed (SOM page 12), but
