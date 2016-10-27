@@ -1,6 +1,13 @@
 CHANGES
 =======
 
+1.2.0
+-----
+* Now if alpha is >=4 then alpha defines directly the B parameter
+* Convenience functions (pstats and cstats) for C and Python API added
+* Documentation updated
+* Normalization option for TIC added to C, C+= and Python APIs
+
 1.1.0
 -----
 * minestats() and pearson() functions removed from the Python module
