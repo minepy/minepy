@@ -399,7 +399,7 @@ int GetClumpsPartition(double *dx, int n, int *Q_map, int *P_map, int *p)
  *   0 on success, 1 if an error occurs
  */
 int GetSuperclumpsPartition(double *dx, int n, int k_hat, int *Q_map,
-			    int *P_map, int *p)
+                            int *P_map, int *p)
 {
   int i, ret;
   double *dp;
@@ -671,11 +671,11 @@ int OptimizeXAxis(double *dx, double *dy, int n, int *Q_map, int q,
   free(cumhist);
 
   free (c);
-  /* end frees*/
+  /* end frees */
 
   return 0;
 
-  /* gotos*/
+  /* gotos */
   error_HP2Q:
     for (i=0; i<=p; i++)
       free(I[i]);
@@ -701,8 +701,12 @@ mine_score *init_score(mine_problem *prob, mine_parameter *param)
   double B;
   mine_score *score;
 
-
-  B = MAX(pow(prob->n, param->alpha), 4);
+  if ((param->alpha > 0.0) && (param->alpha <= 1.0))
+    B = MAX(pow(prob->n, param->alpha), 4);
+  else if (param->alpha >= 4)
+    B = MIN(param->alpha, prob->n);
+  else
+    goto error_score;
 
   score = (mine_score *) malloc (sizeof(mine_score));
   if (score == NULL)
@@ -919,8 +923,8 @@ mine_score *mine_compute_score(mine_problem *prob, mine_parameter *param)
 /* See mine.h */
 char *mine_check_parameter(mine_parameter *param)
 {
-  if ((param->alpha <= 0.0) || (param->alpha > 1.0))
-    return "alpha must be in (0, 1.0]";
+  if (((param->alpha <= 0.0) || (param->alpha > 1.0)) && (param->alpha < 4.0))
+    return "alpha must be in (0.0, 1.0] or >= 4.0";
 
   if (param->c <= 0.0)
     return "c must be > 0.0";
@@ -1023,6 +1027,24 @@ double mine_mcn_general(mine_score *score)
   return score_min;
 }
 
+/* See mine.h */
+double mine_tic(mine_score *score, int norm)
+{
+  int i, j, k=0;
+  double tic = 0.0;
+
+  for (i=0; i<score->n; i++)
+    for (j=0; j<score->m[i]; j++)
+      {
+        tic += score->M[i][j];
+        k++;
+      }
+
+  if (norm)
+    tic /= k;
+
+  return tic;
+}
 
 /* See mine.h */
 double mine_gmic(mine_score *score, double p)
@@ -1104,21 +1126,6 @@ double mine_gmic(mine_score *score, double p)
   return gmic;
 }
 
-
-/* See mine.h */
-double mine_tic(mine_score *score)
-{
-  int i, j;
-  double tic = 0.0;
-
-  for (i=0; i<score->n; i++)
-    for (j=0; j<score->m[i]; j++)
-      tic += score->M[i][j];
-
-  return tic;
-}
-
-
 /* See mine.h */
 void mine_free_score(mine_score **score)
 {
@@ -1138,4 +1145,77 @@ void mine_free_score(mine_score **score)
       free(score_ptr);
       score_ptr = NULL;
     }
+}
+
+
+mine_pstats *mine_compute_pstats(mine_matrix *X, mine_parameter *param)
+{
+  int i, j, k;
+  mine_problem prob;
+  mine_score *score;
+  mine_pstats *stats;
+
+  /* Allocate memory for stats */
+  stats = (mine_pstats *) malloc(sizeof(mine_pstats));
+  stats->n = (X->n * (X->n-1)) / 2;
+  stats->mic = (double *) malloc(stats->n * sizeof(double *));
+  stats->tic = (double *) malloc(stats->n * sizeof(double *));
+
+  k = 0;
+  prob.n = X->m;
+  for (i=0; i<X->n-1; i++)
+    {
+      prob.x = &X->data[i*X->m];
+      for (j=i+1; j<X->n; j++)
+        {
+          prob.y = &X->data[j*X->m];
+          score = mine_compute_score(&prob, param);
+          stats->mic[k] = mine_mic(score);
+          stats->tic[k] = mine_tic(score, TRUE);
+          mine_free_score(&score);
+          k++;
+        }
+    }
+
+  return stats;
+}
+
+
+mine_cstats *mine_compute_cstats(mine_matrix *X, mine_matrix *Y,
+                                 mine_parameter *param)
+{
+  int i, j, k;
+  mine_cstats *stats;
+  mine_problem prob;
+  mine_score *score;
+
+
+  if (X->m != Y->m)
+    return NULL;
+
+  /* Allocate memory for stats */
+  stats = (mine_cstats *) malloc(sizeof(mine_cstats));
+  stats->n = X->n;
+  stats->m = Y->n;
+  stats->mic = (double *) malloc((stats->n * stats->m) * sizeof(double *));
+  stats->tic = (double *) malloc((stats->n * stats->m) * sizeof(double *));
+
+  k = 0;
+  prob.n = X->m;
+  for (i=0; i<X->n; i++)
+    {
+      prob.x = &X->data[i*X->m];
+
+      for (j=0; j<Y->n; j++)
+        {
+          prob.y = &Y->data[j*Y->m];
+          score = mine_compute_score(&prob, param);
+          stats->mic[k] = mine_mic(score);
+          stats->tic[k] = mine_tic(score, TRUE);
+          mine_free_score(&score);
+          k++;
+        }
+    }
+
+  return stats;
 }

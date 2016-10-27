@@ -41,7 +41,7 @@ class MINE {
     double gmic(double p);
 
     /* See mine.h */
-    double tic();
+    double tic(int norm);
 };
 
 #endif /* _CPPMINE_H */

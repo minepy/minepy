@@ -34,7 +34,7 @@ See the :ref:`c_api` documentation.
 
    .. cpp:function:: void MINE::mcn_general()
 
-   .. cpp:function:: void MINE::tic()
+   .. cpp:function:: void MINE::tic(int norm)
 
 
 Example

@@ -1,3 +1,7 @@
+/*
+ * $ gcc c_example.c -O3 -Wall ../libmine/mine.c -I../libmine/ -lm
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
@@ -26,7 +30,7 @@ int main (int argc, char **argv)
   ret = mine_check_parameter(&param);
   if (ret)
     {
-      printf("ERROR: %s\n", ret);
+      printf("ERROR: %s\n\n", ret);
       return 1;
     }
 

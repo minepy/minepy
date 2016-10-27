@@ -23,7 +23,12 @@ from __future__ import division
 import numpy as np
 cimport numpy as np
 from libc.stdlib cimport *
+from libc.stdio cimport *
 cimport cython
+from cython.parallel import parallel, prange
+
+np.import_array()
+
 
 # import structures and functions from mine.h
 cdef extern from "../libmine/mine.h":
@@ -44,26 +49,47 @@ cdef extern from "../libmine/mine.h":
 
     char *libmine_version
 
-    mine_score *mine_compute_score (mine_problem *prob, mine_parameter *param) nogil
+    mine_score *mine_compute_score (mine_problem *prob,
+                                    mine_parameter *param) nogil
     char *mine_check_parameter(mine_parameter *param) nogil
     double mine_mic (mine_score *score) nogil
     double mine_mas (mine_score *score) nogil
     double mine_mev (mine_score *score) nogil
     double mine_mcn (mine_score *score, double eps) nogil
     double mine_mcn_general (mine_score *score) nogil
+    double mine_tic (mine_score *score, int norm) nogil
     double mine_gmic (mine_score *score, double p) nogil
-    double mine_tic (mine_score *score) nogil
     void mine_free_score (mine_score **score) nogil
-
     int EST_MIC_APPROX
     int EST_MIC_E
+
+    # convenience structures and functions
+    ctypedef struct mine_matrix:
+        double *data
+        int n
+        int m
+
+    ctypedef struct mine_pstats:
+        double *mic
+        double *tic
+        int n
+
+    ctypedef struct mine_cstats:
+        double *mic
+        double *tic
+        int n
+        int m
+
+    mine_pstats *mine_compute_pstats(mine_matrix *X, mine_parameter *param) nogil
+    mine_cstats *mine_compute_cstats(mine_matrix *X, mine_matrix *Y,
+                                     mine_parameter *param) nogil
 
 
 version = libmine_version
 
 
 EST = {
-	"mic_approx": EST_MIC_APPROX,
+    "mic_approx": EST_MIC_APPROX,
 	"mic_e": EST_MIC_E
 	}
 
@@ -79,8 +105,11 @@ cdef class MINE:
         """
         Parameters
         ----------
-        alpha : float (0, 1.0]
-            the exponent in B(n) = n^alpha.
+        alpha : float (0, 1.0] or >=4
+            if alpha is in (0,1] then B will be max(n^alpha, 4) where n is the
+            number of samples. If alpha is >=4 then alpha defines directly the B
+            parameter. If alpha is higher than the number of samples (n) it will
+            be limited to be n, so B = min(alpha, n).
         c : float (> 0)
             determines how many more clumps there will be than columns in
             every partition. Default value is 15, meaning that when trying to
@@ -103,8 +132,8 @@ cdef class MINE:
             raise ValueError(ret)
 
     def compute_score(self, x, y):
-        """Computes the maximum normalized mutual information scores
-        between `x` and `y`.
+        """Computes the (equi)characteristic matrix (i.e. maximum normalized
+        mutual information scores.
         """
         cdef int i, j
         cdef np.ndarray[np.float_t, ndim=1] xa, ya
@@ -186,21 +215,22 @@ cdef class MINE:
 
         return mine_gmic(self.score, p)
 
-    def tic(self):
-        """Returns the Total Information Coefficient (TIC or TIC_e).
+    def tic(self, norm=False):
+        """Returns the Total Information Coefficient (TIC or TIC_e). If
+        norm==True TIC will be normalized in [0, 1].
         """
 
         if self.score is NULL:
             raise ValueError("no score computed")
 
-        return mine_tic(self.score)
+        return mine_tic(self.score, norm)
 
     @cython.boundscheck(True)
     def get_score(self):
-        """Returns the maximum normalized mutual information scores M (i.e. the
-        characteristic matrix if est="mic_approx", the equicharacteristic matrix
-        instead). M is a list of 1d numpy arrays where M[i][j] contains the
-        score using a grid partitioning x-values into i+2 bins and y-values
+        """Returns the maximum normalized mutual information scores (i.e. the
+        characteristic matrix M if est="mic_approx", the equicharacteristic
+        matrix instead). M is a list of 1d numpy arrays where M[i][j] contains
+        the score using a grid partitioning x-values into i+2 bins and y-values
         into j+2 bins.
         """
 
@@ -219,11 +249,171 @@ cdef class MINE:
         return M
 
     def computed(self):
-        """Return True if the scores ((equi)characteristic matrix) are
-        computed.
+        """Return True if the (equi)characteristic matrix) is computed.
         """
 
         if self.score is NULL:
             return False
         else:
             return True
+
+
+@cython.boundscheck(False)
+def pstats(X, alpha=0.6, c=15, est="mic_approx"):
+    """Compute pairwise statistics (MIC and normalized TIC) between variables
+    (convenience function).
+
+    For each statistic, the upper triangle of the matrix is stored by row
+    (condensed matrix). If m is the number of variables, then for i < j < m, the
+    statistic between (row) i and j is stored in k = m*i - i*(i+1)/2 - i - 1 + j.
+    The length of the vectors is n = m*(m-1)/2.
+
+    Parameters
+    ----------
+    X : 2D array_like object
+        An n-by-m array of n variables and m samples.
+    alpha : float (0, 1.0] or >=4
+        if alpha is in (0,1] then B will be max(n^alpha, 4) where n is the
+        number of samples. If alpha is >=4 then alpha defines directly the B
+        parameter. If alpha is higher than the number of samples (n) it will be
+        limited to be n, so B = min(alpha, n).
+    c : float (> 0)
+        determines how many more clumps there will be than columns in
+        every partition. Default value is 15, meaning that when trying to
+        draw x grid lines on the x-axis, the algorithm will start with at
+        most 15*x clumps.
+    est : str ("mic_approx", "mic_e")
+        estimator. With est="mic_approx" the original MINE statistics will
+        be computed, with est="mic_e" the equicharacteristic matrix is
+        is evaluated and MIC_e and TIC_e are returned.
+
+    Returns
+    -------
+    mic : 1D ndarray
+        the condensed MIC statistic matrix of length n*(n-1)/2.
+    tic : 1D ndarray
+        the condensed normalized TIC statistic matrix of length n*(n-1)/2.
+    """
+
+    cdef int n, d
+    cdef mine_parameter param
+    cdef mine_matrix Xm
+    cdef mine_pstats *pstats
+    cdef np.ndarray[np.float_t, ndim=2] Xa
+    cdef np.ndarray[np.float_t, ndim=1] mica, tica
+    cdef np.npy_intp shape[1]
+
+
+    param.c = <double> c
+    param.alpha = <double> alpha
+    param.est = <int> EST[est]
+
+    ret = mine_check_parameter(&param)
+    if ret:
+        raise ValueError(ret)
+
+    Xa = np.ascontiguousarray(X, dtype=np.float)
+    Xm.data = <double *> Xa.data
+    Xm.n = <int> Xa.shape[0]
+    Xm.m = <int> Xa.shape[1]
+
+    pstats = mine_compute_pstats(&Xm, &param)
+
+    shape[0] = <np.npy_intp> pstats.n
+    mica = np.PyArray_SimpleNewFromData(1, shape, np.NPY_DOUBLE,
+                                        <void *> pstats.mic)
+    np.PyArray_UpdateFlags(mica, mica.flags.num | np.NPY_OWNDATA)
+
+    tica = np.PyArray_SimpleNewFromData(1, shape, np.NPY_DOUBLE,
+                                        <void *> pstats.tic)
+    np.PyArray_UpdateFlags(tica, tica.flags.num | np.NPY_OWNDATA)
+
+    free(pstats)
+
+    return mica, tica
+
+
+@cython.boundscheck(False)
+def cstats(X, Y, alpha=0.6, c=15, est="mic_approx"):
+    """Compute statistics (MIC and normalized TIC) between each pair of the two
+    collections of variables (convenience function).
+
+    If n and m are the number of variables in X and Y respectively, then the
+    statistic between the (row) i (for X) and j (for Y) is stored in mic[i, j]
+    and tic[i, j].
+
+    Parameters
+    ----------
+    X : 2D array_like object
+        An n by m array of n variables and m samples.
+    Y : 2D array_like object
+        An p by m array of p variables and m samples.
+    alpha : float (0, 1.0] or >=4
+        if alpha is in (0,1] then B will be max(n^alpha, 4) where n is the
+        number of samples. If alpha is >=4 then alpha defines directly the B
+        parameter. If alpha is higher than the number of samples (n) it will be
+        limited to be n, so B = min(alpha, n).
+    c : float (> 0)
+        determines how many more clumps there will be than columns in
+        every partition. Default value is 15, meaning that when trying to
+        draw x grid lines on the x-axis, the algorithm will start with at
+        most 15*x clumps.
+    est : str ("mic_approx", "mic_e")
+        estimator. With est="mic_approx" the original MINE statistics will
+        be computed, with est="mic_e" the equicharacteristic matrix is
+        is evaluated and MIC_e and TIC_e are returned.
+
+    Returns
+    -------
+    mic : 2D ndarray
+        the MIC statistic matrix (n x p).
+    tic : 2D ndarray
+        the normalized TIC statistic matrix (n x p).
+    """
+
+    cdef int n, d
+    cdef mine_parameter param
+    cdef mine_matrix Xm, Ym
+    cdef mine_cstats *cstats
+    cdef np.ndarray[np.float_t, ndim=2] Xa, Ya
+    cdef np.ndarray[np.float_t, ndim=2] mica, tica
+    cdef np.npy_intp shape[2]
+
+
+    param.c = <double> c
+    param.alpha = <double> alpha
+    param.est = <int> EST[est]
+
+    ret = mine_check_parameter(&param)
+    if ret:
+        raise ValueError(ret)
+
+    Xa = np.ascontiguousarray(X, dtype=np.float)
+    Ya = np.ascontiguousarray(Y, dtype=np.float)
+
+    if X.shape[1] != Y.shape[1]:
+        raise ValueError("X, Y: shape mismatch")
+
+    Xm.data = <double *> Xa.data
+    Xm.n = <int> Xa.shape[0]
+    Xm.m = <int> Xa.shape[1]
+
+    Ym.data = <double *> Ya.data
+    Ym.n = <int> Ya.shape[0]
+    Ym.m = <int> Ya.shape[1]
+
+    cstats = mine_compute_cstats(&Xm, &Ym, &param)
+
+    shape[0] = <np.npy_intp> cstats.n
+    shape[1] = <np.npy_intp> cstats.m
+    mica = np.PyArray_SimpleNewFromData(2, shape, np.NPY_DOUBLE,
+                                        <void *> cstats.mic)
+    np.PyArray_UpdateFlags(mica, mica.flags.num | np.NPY_OWNDATA)
+
+    tica = np.PyArray_SimpleNewFromData(2, shape, np.NPY_DOUBLE,
+                                        <void *> cstats.tic)
+    np.PyArray_UpdateFlags(tica, tica.flags.num | np.NPY_OWNDATA)
+
+    free(cstats)
+
+    return mica, tica

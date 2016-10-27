@@ -90,6 +90,16 @@ double MINE::mcn_general()
 }
 
 
+double MINE::tic(int norm)
+{
+  char *ret = "no score computed";
+  if (score == NULL)
+    throw ret;
+
+  return mine_tic(score, norm);
+}
+
+
 double MINE::gmic(double p)
 {
   char *ret = "no score computed";
@@ -97,14 +107,4 @@ double MINE::gmic(double p)
     throw ret;
 
   return mine_gmic(score, p);
-}
-
-
-double MINE::tic()
-{
-  char *ret = "no score computed";
-  if (score == NULL)
-    throw ret;
-
-  return mine_tic(score);
 }

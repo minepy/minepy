@@ -6,10 +6,19 @@ function [minestats, M] = mine(x, y, alpha, c, est)
 %
 %   MINESTATS = MINE(X, Y, ALPHA, C, EST) computes the MINE statistics
 %   between X and Y. X and Y must be row vectors of size n.
-%   Alpha is the exponent in B(n) = n^alpha and must be in (0, 1.0].
-%   Parameter c determines how many more clumps there will be than
-%   columns in every partition and must be > 0.
-%   Est is a string defining the estimation method.
+%
+%   If alpha is in (0,1] then B will be max(n^alpha, 4) where n is the number of
+%   samples. If alpha is >=4 then alpha defines directly the B parameter. If B
+%   is higher than the number of samples (n) it will be limited to n, so
+%   B = min(alpha, n).
+%
+%   c determines how many more clumps there will be than columns in every
+%   partition, c=15 meaning that when trying to draw x grid lines on the x-axis,
+%   the algorithm will start with at most 15*x clumps. c must be > 0.
+%
+%   estimator. With est="mic_approx" the original MINE statistics will be
+%   computed, with est="mic_e" the equicharacteristic matrix is is evaluated and
+%   the mic() and tic() methods will return MIC_e and TIC_e values respectively.
 %
 %   MINESTATS = MINE(X, Y, ALPHA, C) computes the MINE statistics
 %   between X and Y. Default value of EST is 'mic_approx'.

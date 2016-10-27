@@ -25,8 +25,7 @@
  *  A = [MIC, MAS, MEV, MCN, MCN_GENERAL, TIC]
  *  M (optional) = characteristic matrix (square dense matrix)
  */
-void mexFunction(int nlhs, mxArray *plhs[],
-		 int nrhs, const mxArray *prhs[])
+void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 {
   double *x, *y;
   double alpha;
@@ -85,7 +84,7 @@ void mexFunction(int nlhs, mxArray *plhs[],
 
   /* check the number of elements of X and Y */
   if (ncolsx != ncolsy)
-    mexErrMsgTxt("X and Y must have the same number of elements.");
+    mexErrMsgTxt("X, Y: shape mismatch");
 
   /* build param */
   param.alpha = alpha;
@@ -115,9 +114,9 @@ void mexFunction(int nlhs, mxArray *plhs[],
   out[2] = mine_mev(score);
   out[3] = mine_mcn(score, 0);
   out[4] = mine_mcn_general(score);
-  out[5] = mine_tic(score);
+  out[5] = mine_tic(score, 0);
 
-  /* return full characteristic matrix */
+  /* return the (equi)characteristic matrix */
   if (nlhs>1)
     {
       mwSize i, j, nrows, ncols;
@@ -127,9 +126,9 @@ void mexFunction(int nlhs, mxArray *plhs[],
       out = mxGetPr(plhs[1]);
 
       for (i=0; i<nrows; i++)
-        {
-          for (j=0; j<score->m[i]; j++)
-            out[nrows*j + i] = score->M[i][j];
+				{
+    			for (j=0; j<score->m[i]; j++)
+        		out[nrows*j + i] = score->M[i][j];
         }
     }
 

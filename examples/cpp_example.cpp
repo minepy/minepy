@@ -59,7 +59,7 @@ main (int argc, char **argv)
       cout << "MEV: " << mine->mev() << "\n";
       cout << "MCN (eps=0): " << mine->mcn(0) << "\n";
       cout << "MCN (eps=1-MIC): " << mine->mcn_general() << "\n";
-      cout << "TIC: " << mine->tic() << "\n";
+      cout << "TIC: " << mine->tic(FALSE) << "\n";
     }
   catch (char *s)
     {

@@ -9,7 +9,7 @@ Requirements:
 
 Download latest version from https://github.com/minepy/minepy/releases. No
 installation is required. See :ref:`c_api` and :ref:`cpp_api` on how to
-include the library in your C/C++ software and how to compile.
+include and compile the library in your C/C++ software.
 
 Python users
 ------------
