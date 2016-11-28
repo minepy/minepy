@@ -117,23 +117,26 @@ int *argsort(double *a, int n)
  *
  * Parameters
  *   cumhist : cumulative histogram matrix along P_map
+ *   cumhist_log : log(cumhist)
  *   q : number of rows of cumhist (number of partitions in Q_map)
  *   p : number of cols of cumhist (number of partitions in P_map)
  *   n : total number of points
  */
-double hq(int **cumhist, int q, int p, int n)
+double hq(int **cumhist, double **cumhist_log, int q, int p, int n)
 {
   int i;
-  double prob, H = 0.0;
+  double total, total_log, prob, prob_log, H = 0.0;
 
-  double total = (double) n;
+  total = (double) n;
+  total_log = log(total);
 
   for (i=0; i<q; i++)
     {
-      if (cumhist[i][p-1] != 0)
+      prob = (double) cumhist[i][p-1] / total;
+      if (prob != 0)
         {
-          prob = (double) cumhist[i][p-1] / total;
-          H -= prob * log(prob);
+          prob_log = cumhist_log[i][p-1] - total_log;
+          H -= prob * prob_log;
        }
     }
 
@@ -146,35 +149,39 @@ double hq(int **cumhist, int q, int p, int n)
  *
  * Parameters
  *   c : c_1, ..., c_p
+ *   c_log : log(c)
  *   s : s in c_s
  *   t : t in c_t
  */
-double hp3(int *c, int s, int t)
+double hp3(int *c, double *c_log, int s, int t)
 {
   int sum;
-  double prob, H = 0.0;
-
-
-  double total = (double) c[t-1];
+  double total, total_log, prob, prob_log, H = 0.0;
 
   if (s == t)
     return 0.0;
 
-  if (c[s-1] != 0)
+  total = (double) c[t-1];
+  total_log = log(total);
+
+  prob = (double) c[s-1] / total;
+  if (prob != 0)
     {
-      prob = (double) c[s-1] / total;
-      H -= prob * log(prob);
+      prob_log = c_log[s-1] - total_log;
+      H -= prob * prob_log;
     }
 
   sum = c[t-1] - c[s-1];
+  prob = (double) sum / total;
   if (sum != 0)
     {
-      prob = (double) sum / total;
-      H -= prob * log(prob);
+      prob_log = log((double) sum) - total_log;
+      H -= prob * prob_log;
     }
 
   return H;
 }
+
 
 /*
  * Returns the entropy induced by the points on the partition
@@ -182,32 +189,37 @@ double hp3(int *c, int s, int t)
  *
  * Parameters
  *   cumhist : cumulative histogram matrix along P_map
+ *   cumhist_log : log(cumhist)
  *   c : c_1, ..., c_p
  *   q : number of rows of cumhist (number of partitions in Q_map)
  *   p : number of cols of cumhist (number of partitions in P_map)
  *   s : s in c_s
  *   t : t in c_t
  */
-double hp3q(int **cumhist, int *c, int q, int p, int s, int t)
+double hp3q(int **cumhist, double **cumhist_log, int *c, int q, int p, int s, int t)
 
 {
   int i, sum;
-  double prob, H = 0.0;
-  double total = (double) c[t-1];
+  double total, total_log, prob, prob_log, H = 0.0;
+
+  total = (double) c[t-1];
+  total_log = log(total);
 
   for (i=0; i<q; i++)
     {
-      if (cumhist[i][s-1] != 0)
+      prob = (double) cumhist[i][s-1] / total;
+      if (prob != 0)
         {
-          prob = (double) cumhist[i][s-1] / total;
-          H -= prob * log(prob);
+          prob_log = cumhist_log[i][s-1] - total_log;
+          H -= prob * prob_log;
         }
 
       sum = cumhist[i][t-1] - cumhist[i][s-1];
-      if (sum != 0)
+      prob = (double) sum / total;
+      if (prob != 0)
         {
-          prob = (double) sum / total;
-          H -= prob * log(prob);
+          prob_log = log((double) sum) - total_log;
+          H -= prob * prob_log;
         }
     }
 
@@ -231,21 +243,22 @@ double hp3q(int **cumhist, int *c, int q, int p, int s, int t)
 double hp2q(int **cumhist, int *c, int q, int p, int s, int t)
 {
   int i, sum;
-  double prob, H = 0.0 ;
-
-
-  double total = (double) (c[t-1] - c[s-1]);
+  double total, total_log, prob, prob_log, H = 0.0 ;
 
   if (s == t)
     return 0.0;
 
+  total = (double) (c[t-1] - c[s-1]);
+  total_log = log(total);
+
   for (i=0; i<q; i++)
     {
       sum = cumhist[i][t-1] - cumhist[i][s-1];
-      if (sum != 0)
+      prob = (double) sum / total;
+      if (prob != 0)
         {
-          prob = (double) sum / total;
-          H -= prob * log(prob);
+          prob_log = log((double) sum) - total_log;
+          H -= prob * prob_log;
         }
     }
 
@@ -452,6 +465,25 @@ int *compute_c(int *P_map, int p, int n)
 }
 
 
+double *compute_c_log(int *c, int p)
+{
+  int i;
+  double *c_log;
+
+  c_log = (double *) malloc (p * sizeof(double));
+  if (c_log == NULL)
+    return NULL;
+
+  for (i=0; i<p; i++)
+    if (c[i] != 0)
+      c_log[i] = log((double) c[i]);
+    else
+      c_log[i] = 0;
+
+  return c_log;
+}
+
+
 /* Returns the cumulative histogram matrix along P_map */
 int **compute_cumhist(int *Q_map, int q, int *P_map, int p, int n)
 {
@@ -487,6 +519,38 @@ int **compute_cumhist(int *Q_map, int q, int *P_map, int p, int n)
       cumhist[i][j] += cumhist[i][j-1];
 
   return cumhist;
+}
+
+
+double ** compute_cumhist_log(int **cumhist, int q, int p)
+{
+  int i, j;
+  double **cumhist_log;
+
+  cumhist_log = (double **) malloc (q * sizeof(double *));
+  if (cumhist_log == NULL)
+    return NULL;
+
+  for (i=0; i<q; i++)
+    {
+      cumhist_log[i] = (double *) malloc (p * sizeof(double));
+      if (cumhist_log[i] == NULL)
+        {
+          for (j=0; j<i; j++)
+            free(cumhist_log[j]);
+
+          free(cumhist_log);
+          return NULL;
+        }
+
+      for (j=0; j<p; j++)
+        if (cumhist[i][j] != 0)
+          cumhist_log[i][j] = log((double) cumhist[i][j]);
+        else
+          cumhist_log[i][j] = 0;
+    }
+
+    return cumhist_log;
 }
 
 
@@ -550,6 +614,7 @@ double **compute_HP2Q(int **cumhist, int*c, int q, int p)
   return HP2Q;
 }
 
+
 /*
  * Returns the normalized MI scores.
  *
@@ -577,7 +642,7 @@ int OptimizeXAxis(double *dx, double *dy, int n, int *Q_map, int q,
   int **cumhist;
   double **I, **HP2Q;
   double F, F_max, HQ, ct, cs;
-
+  double **cumhist_log, *c_log;
 
   /* return score=0 if p=1 */
   if (p == 1)
@@ -592,11 +657,21 @@ int OptimizeXAxis(double *dx, double *dy, int n, int *Q_map, int q,
   if (c == NULL)
     goto error_c;
 
+  /* precompute log(c) (log(c)=0 when c=0) */
+  c_log = compute_c_log(c, p);
+  if (c_log == NULL)
+    goto error_c_log;
+
   /* compute the cumulative histogram matrix along P_map */
   cumhist = compute_cumhist(Q_map, q, P_map, p, n);
   if (cumhist == NULL)
     goto error_cumhist;
 
+  /* precompute log(cumhist) (log(cumhist)=0 when cumhist=0) */
+  cumhist_log = compute_cumhist_log(cumhist, q, p);
+  if (cumhist == NULL)
+    goto error_cumhist_log;
+  
   /* I matrix initialization */
   I = init_I(p, x);
   if (I == NULL)
@@ -608,7 +683,7 @@ int OptimizeXAxis(double *dx, double *dy, int n, int *Q_map, int q,
     goto error_HP2Q;
 
   /* compute H(Q) */
-  HQ = hq(cumhist, q, p, n);
+  HQ = hq(cumhist, cumhist_log, q, p, n);
 
   /* Find the optimal partitions of size 2, Algorithm 2 in SOM, lines 3-8 */
   for (t=2; t<=p; t++)
@@ -616,7 +691,7 @@ int OptimizeXAxis(double *dx, double *dy, int n, int *Q_map, int q,
       F_max = -DBL_MAX;
       for (s=1; s<=t; s++)
         {
-          F = hp3(c, s, t) - hp3q(cumhist, c, q, p, s, t);
+          F = hp3(c, c_log, s, t) - hp3q(cumhist, cumhist_log, c, q, p, s, t);
           if (F > F_max)
             {
               I[t][2] = HQ + F;
@@ -667,9 +742,14 @@ int OptimizeXAxis(double *dx, double *dy, int n, int *Q_map, int q,
   free(I);
 
   for (i=0; i<q; i++)
+    free(cumhist_log[i]);
+  free(cumhist_log);
+
+  for (i=0; i<q; i++)
     free(cumhist[i]);
   free(cumhist);
 
+  free(c_log);
   free (c);
   /* end frees */
 
@@ -682,9 +762,15 @@ int OptimizeXAxis(double *dx, double *dy, int n, int *Q_map, int q,
     free(I);
   error_I:
     for (i=0; i<q; i++)
+      free(cumhist_log[i]);
+    free(cumhist_log);
+  error_cumhist_log: 
+    for (i=0; i<q; i++)
       free(cumhist[i]);
     free(cumhist);
   error_cumhist:
+    free(c_log);
+  error_c_log:
     free(c);
   error_c:
     return 1;
