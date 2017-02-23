@@ -23,7 +23,7 @@ from __future__ import division
 import numpy as np
 cimport numpy as np
 from libc.stdlib cimport *
-from minedecl cimport *
+from libmine cimport *
 cimport cython
 
 np.import_array()
