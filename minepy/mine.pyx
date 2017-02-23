@@ -1,7 +1,7 @@
 ## minepy python module
 
 ## This code is written by Davide Albanese, <davide.albanese@gmail.com>
-## Copyright (C) 2012-2016 Davide Albanese
+## Copyright (C) 2012-2017 Davide Albanese
 ## Copyright (C) 2012 Fondazione Bruno Kessler
 
 ## This program is free software: you can redistribute it and/or modify
@@ -23,67 +23,10 @@ from __future__ import division
 import numpy as np
 cimport numpy as np
 from libc.stdlib cimport *
-from libc.stdio cimport *
+from minedecl cimport *
 cimport cython
-from cython.parallel import parallel, prange
 
 np.import_array()
-
-
-# import structures and functions from mine.h
-cdef extern from "../libmine/mine.h":
-    ctypedef struct mine_problem:
-        int n
-        double *x
-        double *y
-
-    ctypedef struct mine_parameter:
-        double alpha
-        double c
-        int est
-
-    ctypedef struct mine_score:
-        int n
-        int *m
-        double **M
-
-    char *libmine_version
-
-    mine_score *mine_compute_score (mine_problem *prob,
-                                    mine_parameter *param) nogil
-    char *mine_check_parameter(mine_parameter *param) nogil
-    double mine_mic (mine_score *score) nogil
-    double mine_mas (mine_score *score) nogil
-    double mine_mev (mine_score *score) nogil
-    double mine_mcn (mine_score *score, double eps) nogil
-    double mine_mcn_general (mine_score *score) nogil
-    double mine_tic (mine_score *score, int norm) nogil
-    double mine_gmic (mine_score *score, double p) nogil
-    void mine_free_score (mine_score **score) nogil
-    int EST_MIC_APPROX
-    int EST_MIC_E
-
-    # convenience structures and functions
-    ctypedef struct mine_matrix:
-        double *data
-        int n
-        int m
-
-    ctypedef struct mine_pstats:
-        double *mic
-        double *tic
-        int n
-
-    ctypedef struct mine_cstats:
-        double *mic
-        double *tic
-        int n
-        int m
-
-    mine_pstats *mine_compute_pstats(mine_matrix *X, mine_parameter *param) nogil
-    mine_cstats *mine_compute_cstats(mine_matrix *X, mine_matrix *Y,
-                                     mine_parameter *param) nogil
-
 
 version = libmine_version
 
@@ -95,6 +38,24 @@ EST = {
 
 cdef class MINE:
     """Maximal Information-based Nonparametric Exploration.
+
+    Parameters
+    ----------
+    alpha : float (0, 1.0] or >=4
+        if alpha is in (0,1] then B will be max(n^alpha, 4) where n is the
+        number of samples. If alpha is >=4 then alpha defines directly the B
+        parameter. If alpha is higher than the number of samples (n) it will
+        be limited to be n, so B = min(alpha, n).
+    c : float (> 0)
+        determines how many more clumps there will be than columns in
+        every partition. Default value is 15, meaning that when trying to
+        draw x grid lines on the x-axis, the algorithm will start with at
+        most 15*x clumps.
+    est : str ("mic_approx", "mic_e")
+        estimator. With est="mic_approx" the original MINE statistics will
+        be computed, with est="mic_e" the equicharacteristic matrix is
+        is evaluated and the mic() and tic() methods will return MIC_e and
+        TIC_e values respectively.
     """
 
     cdef mine_problem prob
@@ -102,26 +63,6 @@ cdef class MINE:
     cdef mine_score *score
 
     def __cinit__(self, alpha=0.6, c=15, est="mic_approx"):
-        """
-        Parameters
-        ----------
-        alpha : float (0, 1.0] or >=4
-            if alpha is in (0,1] then B will be max(n^alpha, 4) where n is the
-            number of samples. If alpha is >=4 then alpha defines directly the B
-            parameter. If alpha is higher than the number of samples (n) it will
-            be limited to be n, so B = min(alpha, n).
-        c : float (> 0)
-            determines how many more clumps there will be than columns in
-            every partition. Default value is 15, meaning that when trying to
-            draw x grid lines on the x-axis, the algorithm will start with at
-            most 15*x clumps.
-        est : str ("mic_approx", "mic_e")
-            estimator. With est="mic_approx" the original MINE statistics will
-            be computed, with est="mic_e" the equicharacteristic matrix is
-            is evaluated and the mic() and tic() methods will return MIC_e and
-            TIC_e values respectively.
-        """
-
         self.param.c = <double> c
         self.param.alpha = <double> alpha
         self.param.est = <int> EST[est]

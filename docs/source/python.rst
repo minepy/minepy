@@ -3,24 +3,7 @@
 Python API
 ==========
 
-.. class:: MINE(alpha=0.6, c=15, est="mic_approx")
-
-	Maximal Information-based Nonparametric Exploration.
-
-	:Parameters:
-
-		alpha : float (0, 1.0]
-				the exponent in B(n) = n^alpha.
-		c : float (> 0)
-				determines how many more clumps there will be than columns in
-				every partition. Default value is 15, meaning that when trying to
-				draw x grid lines on the x-axis, the algorithm will start with at
-				most 15*x clumps.
-		est : str ("mic_approx", "mic_e")
-				estimator. With est="mic_approx" the original MINE statistics will
-				be computed, with est="mic_e" the equicharacteristic matrix is
-				is evaluated and the mic() and tic() methods will return MIC_e and
-				TIC_e values respectively.
+.. autoclass:: MINE(alpha=0.6, c=15, est="mic_approx")
 
   .. automethod:: compute_score(x, y)
   .. automethod:: mic()

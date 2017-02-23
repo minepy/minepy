@@ -6,3 +6,4 @@ build/
 docs/build/
 dist/
 MANIFEST
+minepy.egg-info

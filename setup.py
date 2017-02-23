@@ -31,7 +31,7 @@ classifiers = [
     ]
 
 setup(name = 'minepy',
-      version='1.2.0',
+      version='1.3.0',
       description='minepy - Maximal Information-based Nonparametric Exploration',
       long_description=open('README.rst').read(),
       author='Davide Albanese',
@@ -46,5 +46,6 @@ setup(name = 'minepy',
       install_requires = ['numpy >= 1.3.0'],
       classifiers=classifiers,
       ext_modules=ext_modules,
-      use_2to3=True
+      use_2to3=True,
+      package_data={'minepy': ['*.pxd']}
     )
