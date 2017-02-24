@@ -46,5 +46,5 @@ setup(name = 'minepy',
       install_requires = ['numpy >= 1.3.0'],
       classifiers=classifiers,
       ext_modules=ext_modules,
-      use_2to3=True}
+      use_2to3=True
     )
