@@ -1,7 +1,14 @@
 from setuptools import setup, Extension
+from setuptools.command.build_ext import build_ext
 from pkg_resources import get_platform
-import numpy
 
+
+# import numpy only when it is needed
+class build_ext_custom(build_ext):
+    def run(self):
+        import numpy
+        self.include_dirs.append(numpy.get_include())
+        build_ext.run(self)
 
 if get_platform() == "win32" or get_platform() == "win-amd64":
     libraries = []
@@ -12,7 +19,6 @@ ext_modules = [
     Extension("minepy.mine",
               ["minepy/mine.c", "libmine/mine.c"],
               libraries=libraries,
-              include_dirs=[numpy.get_include()],
               extra_compile_args=['-Wall'])
     ]
 
@@ -31,7 +37,7 @@ classifiers = [
     ]
 
 setup(name = 'minepy',
-      version='1.3.0',
+      version='1.2.1',
       description='minepy - Maximal Information-based Nonparametric Exploration',
       long_description=open('README.rst').read(),
       author='Davide Albanese',
@@ -46,5 +52,6 @@ setup(name = 'minepy',
       install_requires = ['numpy >= 1.3.0'],
       classifiers=classifiers,
       ext_modules=ext_modules,
-      use_2to3=True
+      use_2to3=True,
+      cmdclass = {'build_ext': build_ext_custom}
     )
