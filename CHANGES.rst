@@ -1,6 +1,19 @@
 CHANGES
 =======
 
+1.2.1
+-----
+* Now libmine library precomputes log(cumhist) and log(c): 
+  10-15% faster than the previous version.
+* 'pip install minepy' now install the numpy dependency without errors
+
+1.2.0
+-----
+* Now if alpha is >=4 then alpha defines directly the B parameter
+* Convenience functions (pstats and cstats) for C and Python API added
+* Documentation updated
+* Normalization option for TIC added to C, C+= and Python APIs
+
 1.2.0
 -----
 * Now if alpha is >=4 then alpha defines directly the B parameter
