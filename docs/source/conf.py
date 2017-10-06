@@ -28,7 +28,7 @@ needs_sphinx = '1.4.3'
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.imgmath', 'sphinx.ext.napoleon']
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+# templates_path = ['_templates']
 
 # The suffix of source filenames.
 source_suffix = '.rst'
@@ -41,7 +41,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'minepy'
-copyright = u'2016, Davide Albanese - 2013, Fondazione Bruno Kessler'
+copyright = u'2017, Davide Albanese - 2013, Fondazione Bruno Kessler'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
