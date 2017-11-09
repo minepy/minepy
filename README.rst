@@ -25,9 +25,12 @@ Nonparametric Exploration (**MIC** and **MINE family**). Key features:
 minepy is an open-source, GPLv3-licensed software.
 
 **NEWS**: MICtools, a comprehensive and effective pipeline for TICe and MICe
-analysis is now available: https://www.biorxiv.org/content/early/2017/11/07/215855.
-Code and documentation: https://github.com/minepy/mictools. You can find the minepy
-library preinstalled in the Docker image: https://hub.docker.com/r/minepy/mictools/.
+analysis is now available. TICe is used to perform efficiently a high throughput
+screening of all the possible pairwise relationships assessing their
+significance, while MICe is used to rank the subset of significant associations
+on the bases of their strength. Paper: https://www.biorxiv.org/content/early/2017/11/07/215855,
+code and documentation: https://github.com/minepy/mictools. The minepy library
+is preinstalled in the Docker image: https://hub.docker.com/r/minepy/mictools/.
 
 * `Homepage <http://minepy.readthedocs.io>`_
 * `Download <https://github.com/minepy/minepy/releases>`_
