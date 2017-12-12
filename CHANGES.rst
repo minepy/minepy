@@ -3,8 +3,8 @@ CHANGES
 
 1.2.2
 -----
-* **`mine` command-line application** removed. Use `MICtools 
-<https://github.com/minepy/mictools>` instead.
+* mine command-line application removed. Use MICtools 
+(https://github.com/minepy/mictools) instead.
 
 1.2.1
 -----
