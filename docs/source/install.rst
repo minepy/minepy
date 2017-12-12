@@ -3,12 +3,9 @@ Download and Install
 
 C and C++ users
 ---------------
-Requirements:
-
-* GCC
-
-Download latest version from https://github.com/minepy/minepy/releases. No
-installation is required. See :ref:`c_api` and :ref:`cpp_api` on how to
+The GCC is required. Download latest version from 
+https://github.com/minepy/minepy/releases. No installation is required. 
+See :ref:`c_api` and :ref:`cpp_api` on how to
 include and compile the library in your C/C++ software.
 
 Python users
@@ -17,14 +14,14 @@ Python users
 Requirements:
 
 * GCC
-* Python >= 2.7
+* Python 2.7, 3.X
 * NumPy >= 1.3.0 (with header files)
 
 On Linux
 ^^^^^^^^
 
-We suggest to install the GCC compiler through the package manager (e.g. on
-Ubuntu/Debian):
+We suggest to install the GCC and the Python headers through the package manager
+(e.g. on Ubuntu/Debian):
 
 .. code-block:: sh
 
@@ -77,7 +74,8 @@ Finally, install minepy:
 
     sudo pip install minepy
 
-Running the tests:
+Running the tests
+^^^^^^^^^^^^^^^^^
 
    .. code-block:: sh
 
