@@ -1,9 +1,14 @@
 CHANGES
 =======
 
+1.2.2
+-----
+* **`mine` command-line application** removed. Use `MICtools 
+<https://github.com/minepy/mictools>` instead.
+
 1.2.1
 -----
-* Now libmine library precomputes log(cumhist) and log(c): 
+* Now libmine library precomputes log(cumhist) and log(c):
   10-15% faster than the previous version.
 * 'pip install minepy' now install the numpy dependency without errors
 

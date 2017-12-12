@@ -16,15 +16,18 @@ Nonparametric Exploration (**MIC** and **MINE family**). Key features:
 * **Total Information Coefficient** (TIC, DOI: arXiv:1505.02213) and the
   **Generalized Mean Information Coefficient** (GMIC, DOI: arXiv:1308.5712);
 * a **C++** interface;
-* an efficient **Python API**;
+* an efficient **Python API** (Python 2 and 3 compatibility);
 * an efficient **MATLAB/OCTAVE API**;
-* a **command-line application** similar to the original ``MINE.jar``;
-* the `minerva` **R interface** is available at `CRAN
-  <https://cran.r-project.org/web/packages/minerva/index.html>`_.
 
 minepy is an open-source, GPLv3-licensed software.
 
-**NEWS**: MICtools, a comprehensive and effective pipeline for TICe and MICe
+The `minerva` **R interface** is available at `CRAN
+<https://cran.r-project.org/web/packages/minerva/index.html>`_.
+
+..note:: the **`mine` command-line application** is deprecated since version 1.2.2.
+Use MICtools instead (see below).
+
+..note:: MICtools, a comprehensive and effective pipeline for TICe and MICe
 analysis is now available. TICe is used to perform efficiently a high throughput
 screening of all the possible pairwise relationships assessing their
 significance, while MICe is used to rank the subset of significant associations
@@ -32,18 +35,11 @@ on the bases of their strength. Paper: https://www.biorxiv.org/content/early/201
 code and documentation: https://github.com/minepy/mictools. The minepy library
 is preinstalled in the Docker image: https://hub.docker.com/r/minepy/mictools/.
 
-* `Homepage <http://minepy.readthedocs.io>`_
+* `Homepage and Documentation <http://minepy.readthedocs.io>`_
 * `Download <https://github.com/minepy/minepy/releases>`_
 * `Github page <https://github.com/minepy/minepy>`_
 * `Issues <https://github.com/minepy/minepy/issues>`_
-
-Documentation
--------------
-* `Latest (development, github snapshot) <http://minepy.readthedocs.io/en/latest>`_
-* `1.2.1 (stable, 17/08/23) <http://minepy.readthedocs.io/en/v1.2.1>`_
-* `1.2.0 (stable, 16/10/27) <http://minepy.readthedocs.io/en/v1.2.0>`_
-* `1.1.0 (stable, 16/05/10) <http://minepy.readthedocs.io/en/v1.1.0>`_
-* `1.0.0 <http://minepy.sourceforge.net/docs/1.0.0/>`_
+* `Old (version 1.0.0) documentation <http://minepy.sourceforge.net/docs/1.0.0/>`
 
 Citing minepy
 -------------
