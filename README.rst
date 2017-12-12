@@ -43,7 +43,7 @@ The `minerva` **R interface** is available at `CRAN
 * `Download <https://github.com/minepy/minepy/releases>`_
 * `Github page <https://github.com/minepy/minepy>`_
 * `Issues <https://github.com/minepy/minepy/issues>`_
-* `Old (version 1.0.0) documentation <http://minepy.sourceforge.net/docs/1.0.0/>`
+* `Old (version 1.0.0) documentation <http://minepy.sourceforge.net/docs/1.0.0/>`_
 
 Citing minepy
 -------------
