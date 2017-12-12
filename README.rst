@@ -24,16 +24,20 @@ minepy is an open-source, GPLv3-licensed software.
 The `minerva` **R interface** is available at `CRAN
 <https://cran.r-project.org/web/packages/minerva/index.html>`_.
 
-..note:: the **`mine` command-line application** is deprecated since version 1.2.2.
-Use MICtools instead (see below).
+.. note:: 
 
-..note:: MICtools, a comprehensive and effective pipeline for TICe and MICe
-analysis is now available. TICe is used to perform efficiently a high throughput
-screening of all the possible pairwise relationships assessing their
-significance, while MICe is used to rank the subset of significant associations
-on the bases of their strength. Paper: https://www.biorxiv.org/content/early/2017/11/07/215855,
-code and documentation: https://github.com/minepy/mictools. The minepy library
-is preinstalled in the Docker image: https://hub.docker.com/r/minepy/mictools/.
+  The **`mine` command-line application** is deprecated since version 1.2.2.
+  Use MICtools instead (see below).
+
+.. note::
+
+  MICtools, a comprehensive and effective pipeline for TICe and MICe
+  analysis is now available. TICe is used to perform efficiently a high throughput
+  screening of all the possible pairwise relationships assessing their
+  significance, while MICe is used to rank the subset of significant associations
+  on the bases of their strength. Paper: https://www.biorxiv.org/content/early/2017/11/07/215855,
+  code and documentation: https://github.com/minepy/mictools. The minepy library
+  is preinstalled in the Docker image: https://hub.docker.com/r/minepy/mictools/.
 
 * `Homepage and Documentation <http://minepy.readthedocs.io>`_
 * `Download <https://github.com/minepy/minepy/releases>`_
