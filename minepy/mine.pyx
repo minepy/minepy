@@ -1,3 +1,5 @@
+# cython: language_level=3
+
 ## minepy python module
 
 ## This code is written by Davide Albanese, <davide.albanese@gmail.com>
@@ -23,7 +25,7 @@ from __future__ import division
 import numpy as np
 cimport numpy as np
 from libc.stdlib cimport *
-from libmine cimport *
+from .libmine cimport *
 cimport cython
 
 np.import_array()
