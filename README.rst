@@ -8,13 +8,14 @@ minepy - Maximal Information-based Nonparametric Exploration
   :target: http://minepy.readthedocs.io/en/latest/?badge=latest
   :alt: Documentation Status
 
-minepy provides an **ANSI C library** for the Maximal Information-based
+minepy provides a library for the Maximal Information-based
 Nonparametric Exploration (**MIC** and **MINE family**). Key features:
 
 * **APPROX-MIC** (the original algorithm, DOI: 10.1126/science.1205438) and
   **MIC_e** (DOI: arXiv:1505.02213 and DOI: arXiv:1505.02214) estimators;
 * **Total Information Coefficient** (TIC, DOI: arXiv:1505.02213) and the
   **Generalized Mean Information Coefficient** (GMIC, DOI: arXiv:1308.5712);
+* an **ANSI C library**
 * a **C++** interface;
 * an efficient **Python API** (Python 2 and 3 compatibility);
 * an efficient **MATLAB/OCTAVE API**;
