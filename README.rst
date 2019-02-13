@@ -24,26 +24,31 @@ minepy is an open-source, GPLv3-licensed software.
 The `minerva` **R interface** is available at `CRAN
 <https://cran.r-project.org/web/packages/minerva/index.html>`_.
 
-.. note:: 
 
-  The **`mine` command-line application** is deprecated since version 1.2.2.
-  Use MICtools instead (see below).
+MICtools
+--------
+The **`mine`** command-line application is deprecated since version 1.2.2.
+We suggest to use MICtools, a comprehensive and effective pipeline for TICe and MICe
+analysis. TICe is used to perform efficiently a high throughput
+screening of all the possible pairwise relationships assessing their
+significance, while MICe is used to rank the subset of significant associations
+on the bases of their strength. `Paper <https://academic.oup.com/gigascience/article/7/4/giy032/4958979>`_,
+`code and documentation <https://github.com/minepy/mictools>`_. 
 
-.. note::
+Docker image
+^^^^^^^^^^^^
 
-  MICtools, a comprehensive and effective pipeline for TICe and MICe
-  analysis is now available. TICe is used to perform efficiently a high throughput
-  screening of all the possible pairwise relationships assessing their
-  significance, while MICe is used to rank the subset of significant associations
-  on the bases of their strength. `Paper <https://academic.oup.com/gigascience/article/7/4/giy032/4958979>`_,
-  `code and documentation <https://github.com/minepy/mictools>`_. The minepy library
-  is preinstalled in the `Docker image <https://hub.docker.com/r/minepy/mictools/>`_.
+The minepy library is preinstalled in the `MICtools Docker image <https://hub.docker.com/r/minepy/mictools/>`_.
+
+Links
+-----
 
 * `Homepage and Documentation <http://minepy.readthedocs.io>`_
 * `Download <https://github.com/minepy/minepy/releases>`_
 * `Github page <https://github.com/minepy/minepy>`_
 * `Issues <https://github.com/minepy/minepy/issues>`_
 * `Old (version 1.0.0) documentation <http://minepy.sourceforge.net/docs/1.0.0/>`_
+
 
 Citing minepy
 -------------
@@ -55,7 +60,7 @@ MINE suite and its R, Python and MATLAB wrappers.  Bioinformatics (2013)
 doi:10.1093/bioinformatics/bts707.
 
 Financial Contributions
------------------------
+^^^^^^^^^^^^^^^^^^^^^^^
 
 * `Computational Biology Unit - Research and Innnovation Center at Fondazione
   Edmund Mach <http://www.fmach.it/eng>`_
