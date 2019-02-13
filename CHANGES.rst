@@ -1,6 +1,10 @@
 CHANGES
 =======
 
+1.2.3
+-----
+* Fix Python 3.7 issue.
+
 1.2.2
 -----
 * mine command-line application removed. Use MICtools 

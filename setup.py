@@ -37,7 +37,7 @@ classifiers = [
     ]
 
 setup(name = 'minepy',
-      version='1.2.3.dev1',
+      version='1.2.3',
       description='minepy - Maximal Information-based Nonparametric Exploration',
       long_description=open('README.rst').read(),
       author='Davide Albanese',
