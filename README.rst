@@ -35,7 +35,7 @@ The `minerva` **R interface** is available at `CRAN
   analysis is now available. TICe is used to perform efficiently a high throughput
   screening of all the possible pairwise relationships assessing their
   significance, while MICe is used to rank the subset of significant associations
-  on the bases of their strength. `Paper <https://www.biorxiv.org/content/early/2017/11/07/215855>`_,
+  on the bases of their strength. `Paper <https://academic.oup.com/gigascience/article/7/4/giy032/4958979>`_,
   `code and documentation <https://github.com/minepy/mictools>`_. The minepy library
   is preinstalled in the `Docker image <https://hub.docker.com/r/minepy/mictools/>`_.
 
