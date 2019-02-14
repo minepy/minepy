@@ -11,6 +11,9 @@ minepy - Maximal Information-based Nonparametric Exploration
 .. image:: https://anaconda.org/bioconda/minepy/badges/version.svg
   :target: https://anaconda.org/bioconda/minepy
 
+.. image:: https://badge.fury.io/py/minepy.svg
+    :target: https://badge.fury.io/py/minepy
+
 minepy provides a library for the Maximal Information-based
 Nonparametric Exploration (**MIC** and **MINE family**). Key features:
 
