@@ -1244,8 +1244,8 @@ mine_pstats *mine_compute_pstats(mine_matrix *X, mine_parameter *param)
   /* Allocate memory for stats */
   stats = (mine_pstats *) malloc(sizeof(mine_pstats));
   stats->n = (X->n * (X->n-1)) / 2;
-  stats->mic = (double *) malloc(stats->n * sizeof(double *));
-  stats->tic = (double *) malloc(stats->n * sizeof(double *));
+  stats->mic = (double *) malloc(stats->n * sizeof(double));
+  stats->tic = (double *) malloc(stats->n * sizeof(double));
 
   k = 0;
   prob.n = X->m;
@@ -1283,8 +1283,8 @@ mine_cstats *mine_compute_cstats(mine_matrix *X, mine_matrix *Y,
   stats = (mine_cstats *) malloc(sizeof(mine_cstats));
   stats->n = X->n;
   stats->m = Y->n;
-  stats->mic = (double *) malloc((stats->n * stats->m) * sizeof(double *));
-  stats->tic = (double *) malloc((stats->n * stats->m) * sizeof(double *));
+  stats->mic = (double *) malloc((stats->n * stats->m) * sizeof(double));
+  stats->tic = (double *) malloc((stats->n * stats->m) * sizeof(double));
 
   k = 0;
   prob.n = X->m;
