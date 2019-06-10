@@ -1,6 +1,10 @@
 CHANGES
 =======
 
+1.2.4
+-----
+* Solved allocation issue in mine_compute_pstats mine_compute_cstats.
+
 1.2.3
 -----
 * Fix Python 3.7 issue.
