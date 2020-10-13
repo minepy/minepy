@@ -1,7 +1,7 @@
 #ifndef _LIBMINE_H
 #define _LIBMINE_H
 
-#define LIBMINE_VERSION "1.2.5.dev0"
+#define LIBMINE_VERSION "1.2.5"
 
 #define EST_MIC_APPROX 0 /* The original MIC estimator */
 #define EST_MIC_E      1 /* MIC_e (TIC_e) estimator */
