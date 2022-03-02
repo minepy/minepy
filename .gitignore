@@ -8,3 +8,4 @@ dist/
 MANIFEST
 minepy.egg-info
 .vscode
+.eggs
