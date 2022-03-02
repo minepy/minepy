@@ -1,6 +1,15 @@
 CHANGES
 =======
 
+1.2.6
+-----
+* Python 2.7 no longer supported; 
+* Fix #32.
+
+1.2.5
+-----
+* Fix Python 3.9 incompatibility, #26.
+
 1.2.4
 -----
 * Solved allocation issue in mine_compute_pstats mine_compute_cstats.
