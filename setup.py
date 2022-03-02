@@ -30,14 +30,13 @@ classifiers = [
     'Programming Language :: C++',
     'Programming Language :: Cython',
     'Programming Language :: Python',
-    'Programming Language :: Python :: 2',
     'Programming Language :: Python :: 3',
     'Programming Language :: Other',
     'Operating System :: OS Independent'
     ]
 
 setup(name = 'minepy',
-      version='1.2.5',
+      version='1.2.6',
       description='minepy - Maximal Information-based Nonparametric Exploration',
       long_description=open('README.rst').read(),
       author='Davide Albanese',
@@ -48,9 +47,9 @@ setup(name = 'minepy',
       download_url='http://minepy.readthedocs.io',
       license='GPLv3',
       packages=['minepy'],
+      setup_requires = ['numpy >= 1.3.0'],
       install_requires = ['numpy >= 1.3.0'],
       classifiers=classifiers,
       ext_modules=ext_modules,
-      use_2to3=True,
       cmdclass = {'build_ext': build_ext_custom}
     )

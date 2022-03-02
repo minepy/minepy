@@ -81,8 +81,8 @@ cdef class MINE:
         cdef int i, j
         cdef np.ndarray[np.float_t, ndim=1] xa, ya
 
-        xa = np.ascontiguousarray(x, dtype=np.float)
-        ya = np.ascontiguousarray(y, dtype=np.float)
+        xa = np.ascontiguousarray(x, dtype=np.float64)
+        ya = np.ascontiguousarray(y, dtype=np.float64)
 
         if xa.shape[0] != ya.shape[0]:
             raise ValueError("x, y: shape mismatch")
@@ -184,7 +184,7 @@ cdef class MINE:
 
         M = []
         for i in range(self.score.n):
-            M_temp = np.empty(self.score.m[i], dtype=np.float)
+            M_temp = np.empty(self.score.m[i], dtype=np.float64)
             for j in range(self.score.m[i]):
                 M_temp[j] = self.score.M[i][j]
             M.append(M_temp)
@@ -255,7 +255,7 @@ def pstats(X, alpha=0.6, c=15, est="mic_approx"):
     if ret:
         raise ValueError(ret)
 
-    Xa = np.ascontiguousarray(X, dtype=np.float)
+    Xa = np.ascontiguousarray(X, dtype=np.float64)
     Xm.data = <double *> Xa.data
     Xm.n = <int> Xa.shape[0]
     Xm.m = <int> Xa.shape[1]
@@ -331,8 +331,8 @@ def cstats(X, Y, alpha=0.6, c=15, est="mic_approx"):
     if ret:
         raise ValueError(ret)
 
-    Xa = np.ascontiguousarray(X, dtype=np.float)
-    Ya = np.ascontiguousarray(Y, dtype=np.float)
+    Xa = np.ascontiguousarray(X, dtype=np.float64)
+    Ya = np.ascontiguousarray(Y, dtype=np.float64)
 
     if X.shape[1] != Y.shape[1]:
         raise ValueError("X, Y: shape mismatch")
