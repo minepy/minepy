@@ -1,4 +1,3 @@
-from __future__ import division
 import numpy as np
 import matplotlib.pyplot as plt
 from minepy import MINE
@@ -62,7 +61,7 @@ def others(n=1000):
     mysubplot(x, y, 3, 7, 18, (-1, 1), (-1, 3))
 
     y = (x**2 + rs.uniform(0, 0.5, n)) * \
-        np.array([-1, 1])[rs.random_integers(0, 1, size=n)]
+        np.array([-1, 1])[rs.randint(0, 1 + 1, size=n)]
     mysubplot(x, y, 3, 7, 19, (-1.5, 1.5), (-1.5, 1.5))
 
     y = np.cos(x * np.pi) + rs.uniform(0, 1/8, n)
