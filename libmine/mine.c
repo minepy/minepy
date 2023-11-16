@@ -669,7 +669,7 @@ int OptimizeXAxis(double *dx, double *dy, int n, int *Q_map, int q,
 
   /* precompute log(cumhist) (log(cumhist)=0 when cumhist=0) */
   cumhist_log = compute_cumhist_log(cumhist, q, p);
-  if (cumhist == NULL)
+  if (cumhist_log == NULL)
     goto error_cumhist_log;
   
   /* I matrix initialization */

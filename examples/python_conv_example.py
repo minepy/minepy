@@ -17,7 +17,7 @@ mic_p, tic_p =  pstats(X, alpha=9, c=5, est="mic_e")
 # compute statistics between each pair of samples in X and Y
 mic_c, tic_c =  cstats(X, Y, alpha=9, c=5, est="mic_e")
 
-print "normalized TIC_e (X):"
-print tic_p
-print "MIC_e (X vs. Y):"
-print mic_c
+print("normalized TIC_e (X):")
+print(tic_p)
+print("MIC_e (X vs. Y):")
+print(mic_c)

@@ -1,4 +1,3 @@
-from __future__ import division
 import numpy as np
 import matplotlib.pyplot as plt
 from minepy import MINE
@@ -56,7 +55,7 @@ r2_power = np.empty((len(ff), n_noise))
 np.random.seed(0)
 for i in range(1, n_noise+1):
     for j, f in enumerate(ff):
-        print "Noise: %d, function: %d" % (i, j)
+        print("Noise: %d, function: %d" % (i, j))
 
         mic_approx_null, mic_e_null, tic_e_null, r2_null = [], [], [], []
         mic_approx_alt, mic_e_alt, tic_e_alt, r2_alt = [], [], [], []
